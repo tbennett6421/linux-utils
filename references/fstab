@@ -1,0 +1,2 @@
+#samba config
+//192.168.1.1/share /mnt/point      cifs     username=user,password=secret 0 0

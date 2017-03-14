@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Get the sectors from sda and print field name and raw value
+SEC=$(sudo smartctl /dev/sda -a | grep _Sector | awk '{print $2 , $10}')
+
+# Get the Errors from sda 
+ERR=$(sudo smartctl /dev/sda -a | grep Errors)
+
+# Concatenate the two fields together
+SO="$SEC
+$ERR"
+pymail -t bwerder@ktis.net -f tbennett@ktis.net -s 'smart output' -b "$SO"

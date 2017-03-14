@@ -1,0 +1,32 @@
+#!/bin/bash
+#    Author: Tyler Bennett <tbennett@ktis.net>
+#      Date: April 27, 2013
+#   Purpose: Given a uuid, return the Device Name
+#
+# On some systems that see routine drive swapping
+# most linux distrubations will rotate the dev names
+# to the HDD data ports. This command simply tracks
+# say your system drive and translates it's uuid into
+# the current device identifier
+#
+# On debian systems the command blkid is not
+# in normal users paths, additionally knowing
+# where it is lets us call it without sudo/root
+#
+# my recommendation is to fill in your uuid with the
+# system drive, placing this script in a public path
+# like /usr/local/bin/ , running it in your bashrc,
+# and capturing the output/display it in the terminal
+# to avoid dd'ing your drive.
+#
+
+blkid='/sbin/blkid'
+uuid='fill_me_in';
+dev='';
+
+#get device name from uuid
+proc=`blkid | grep $uuid`
+
+#cut the device off of the output
+dev=`echo $proc | cut -b 1-8`
+echo $dev
