@@ -1,0 +1,70 @@
+#!/usr/bin/python
+
+# Gmail requires less secure apps to be turned on
+# in order for this program to work. Attempting to
+# send an email using this program will result in an
+# error, followed by gmail sending you an email with
+# instructions on how to turn on less secure apps
+
+import smtplib
+import argparse
+from os.path import basename
+from email.mime.application import MIMEApplication
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.utils import formatdate
+
+# Global Variables
+remoteServer = 'smtp.gmail.com'
+myUsername   = 'youremailhere'
+myPassword   = 'yourpasswordhere'
+
+# Files may be None, if so -> forgo sending an email with an attachment
+# Only accepts one to addr at a time
+def send_mail(send_from, send_to, subject, text, files):
+    msg = MIMEMultipart()
+    msg['From']=send_from
+    msg['To']=send_to
+    msg['Date']=formatdate(localtime=True)
+    msg['Subject']=subject
+    msg.attach(MIMEText(text))
+
+    if files != None:
+    	attach_file=MIMEApplication(open(files,"rb").read())
+    	attach_file.add_header('Content-Disposition', 'attachment', filename=basename(files))
+    	msg.attach(attach_file)
+    else:
+    	pass
+
+	try:
+		smtp = smtplib.SMTP(remoteServer, 587)
+		smtp.ehlo()
+		smtp.starttls()
+		smtp.login(myUsername, myPassword)
+		smtp.sendmail(send_from, send_to, msg.as_string())
+		smtp.close()
+		print "Successfully sent email"
+	except Exception as e:
+		print "Error: Unable to send mail"
+		print(e)
+
+# setup our argument parser
+parser = argparse.ArgumentParser(description='Send email from the command line')
+parser.add_argument('-f', required=True, metavar='from', 	help='The address to send from')
+parser.add_argument('-t', required=True, metavar='to', 		help='The address to send to')
+parser.add_argument('-s', required=True, metavar='subject', help='The subject to use')
+parser.add_argument('-b', required=True, metavar='body', 	help='The body of the message')
+parser.add_argument('-a', metavar='attachment', 			help='The file to attach')
+args = parser.parse_args()
+
+# Gather argv here
+fromAddr = args.f
+toAddr   = args.t
+subject  = args.s
+body     = args.b
+attach   = args.a
+
+if args.a != None:
+	send_mail(fromAddr, toAddr, subject, body, attach)
+else:
+	send_mail(fromAddr, toAddr, subject, body, None)
