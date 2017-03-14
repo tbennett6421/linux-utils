@@ -13,10 +13,10 @@ echo ""
 echo "Setting hostname to \"$h_name\""
 echo "# hostname $h_name"
 echo "# echo $h_name > /etc/hostname"
-echo "# sed -ie 's/ubuntu/$h_name/g' /etc/hosts"
+echo "# sed -ie \"s/ubuntu/$h_name/g\" /etc/hosts"
 hostname $h_name
 echo $h_name > /etc/hostname
-sed -ie 's/ubuntu/$h_name/g' /etc/hosts
+sed -ie "s/ubuntu/$h_name/g" /etc/hosts
 
 
 # Generate new ssh host keys
