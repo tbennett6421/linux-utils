@@ -13,6 +13,7 @@ RM="nano"
 ESS_PROGS="vim \
 htop\
 pv \
+rhash \
 gdebi \
 dcfldd \
 secure-delete"

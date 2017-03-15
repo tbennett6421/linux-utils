@@ -7,6 +7,7 @@ alias nowtime='now'
 alias nowdate='date +"%d-%m-%Y"'
 alias beep='echo -e "\a\c"'
 alias beep-lots='while :; do beep; sleep 1; done'
+alias checksum='rhash -r --md5 -p \'%h, %p\n\''
 
 #helper commands for other aliases
 	alias all-users-with-bash-shell='getent passwd | grep /bin/bash | grep -v root | cut -d":" -f1'
