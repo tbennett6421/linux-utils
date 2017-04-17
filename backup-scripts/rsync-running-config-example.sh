@@ -123,6 +123,7 @@ RC="/etc/ssh/ \
 /etc/rc.local \
 /etc/sudoers \
 /usr/local/bin/ \
+/var/prtg/ \
 /var/spool/cron/crontabs/ \
 /home/ \
 /root/"
