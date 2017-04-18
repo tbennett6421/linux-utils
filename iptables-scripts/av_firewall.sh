@@ -1,0 +1,76 @@
+#!/bin/bash
+
+echo "starting firewall script"
+
+IPTABLES="/sbin/iptables"
+LOG_LEVEL="notice"
+
+echo "flushing firewall rules"
+
+## Attempt to Flush All Rules in Filter Table
+$IPTABLES -F
+
+echo "flushing built-in rules"
+
+# Flush Built-in Rules
+$IPTABLES -F INPUT
+$IPTABLES -F OUTPUT
+$IPTABLES -F FORWARD
+
+echo "setting default policies"
+
+## Set Default Policies
+$IPTABLES -P INPUT DROP
+$IPTABLES -P OUTPUT ACCEPT
+$IPTABLES -P FORWARD DROP
+# Allow related and established rules
+$IPTABLES -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+# Create New Chains
+$IPTABLES -N SERVICES
+$IPTABLES -N DENY_PORTS
+$IPTABLES -N DENY_HOSTS
+$IPTABLES -A INPUT -j DENY_PORTS
+$IPTABLES -A INPUT -j DENY_HOSTS
+$IPTABLES -A INPUT -j SERVICES
+
+##########
+# deny ports
+##########
+
+DENIED_PORTS_TCP="137:139 2049 6000:6063 \
+20034 12345:12346 27374 27665 \
+27444 31335 10498 12754"
+
+for PORT in $DENIED_PORTS_TCP; do
+
+$IPTABLES -A DENY_PORTS -p tcp --dport $PORT -m limit --limit 5/minute \
+-j LOG  --log-level $LOG_LEVEL --log-prefix "DENIED PORT:"
+
+$IPTABLES -A DENY_PORTS -p tcp --dport $PORT -j DROP
+done
+
+
+##########
+# deny ports
+##########
+
+HATED_HOSTS="83.168.244.13 74.95.1.73 211.216.52.207 123.123.123.0/24 206.148.164.199 209.197.205.121 157.238.181.136 207.217.120.20 209.236.57.0/24 211.167.101.0/24 151.204.100.0/24 193.152.205.101 151.198.165.0/24 12.254.0.0/16 12.231.0.0/16 141.157.0.0/16 68.162.0.0/16 68.161.0.0/16 217.212.240.180 200.64.40.0/24 195.82.99.250 80.129.120.170 217.165.50.69 217.165.60.19 203.92.64.0/18 165.132.222.41 219.96.198.106 24.118.111.151 67.67.175.241 218.234.208.2 61.97.139.2 211.234.105.236 202.156.209.186 61.129.72.174 219.150.32.232 66.173.229.146 211.136.108.116 163.20.110.139 163.0.0.0/8"
+
+for HATEDHOSTS in $HATED_HOSTS;
+do
+$IPTABLES -A DENY_HOSTS -s $HATEDHOSTS -j LOG --log-level $LOG_LEVEL --log-prefix "HATED HOST:"
+$IPTABLES -A DENY_HOSTS -s $HATEDHOSTS -j DROP
+done
+
+
+
+##### 
+# services
+#####
+SERVICE_PORTS="22 53 80 443 25 110 995 993 123 48001 48995:49000 9333" 
+
+        for PORT in $SERVICE_PORTS; do
+$IPTABLES -A SERVICES -m state --state NEW -p tcp --dport $PORT -j ACCEPT
+$IPTABLES -A SERVICES -m state --state NEW -p udp --dport $PORT -j ACCEPT
+done
