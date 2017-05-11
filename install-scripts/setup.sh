@@ -15,6 +15,7 @@ htop\
 pv \
 rhash \
 gdebi \
+screen \
 dcfldd \
 secure-delete"
 
