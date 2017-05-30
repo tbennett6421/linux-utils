@@ -23,6 +23,7 @@ alias checksum='rhash -r --md5 -p "%h, %p\n"'
 # updating stuff
 alias update-sys='sudo apt-get update && sudo apt-get upgrade'
 alias update-github='cleanup-github-stuff ; github-new-aliases ; github-new-vim ; distribute-github-stuff'
+alias update-motd='sudo /usr/lib/update-notifier/update-motd-updates-available --force'
 
 ### Enhanced commands ###
 alias ls="ls -hp --color=auto"
