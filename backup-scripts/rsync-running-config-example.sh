@@ -104,7 +104,7 @@ TTY_STATS=$?;
 
 # paths to use
 PR_KEY="/home/dr/.ssh/id_rsa"
-REM_RC_PATH="/home/dr/servers/$HOST/running-config/$TS/"
+REM_RC_PATH="/mnt/dr/servers/$HOST/running-config/$TS/"
 REM_HOST="dr1"
 REM_USER="dr"
 REM_USER_HOST="$REM_USER@$REM_HOST"
