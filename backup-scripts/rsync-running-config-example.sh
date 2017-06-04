@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Tyler Bennett <tbennett6421@gmail.com>
-# 2016-01-08
+# 2017-06-03
 #
 # This script rsyncs the given folders to a remote location.
 # On errors, the script writes to syslog, a flat file, and emails out to the admin
@@ -18,7 +18,7 @@
 # usage: pygmail [-h] -f from -t to -s subject -b body [-a attachment]
 #
 # Notes:
-# --log-file sucks dick ; redirect stdout and stderr to tee for better logging capabilites
+# --log-file sucks; redirect stdout and stderr to tee for better logging capabilites
 #
 # @todo: ping rem server and fail loudly if it is down
 # @todo: check if the above works or not
@@ -105,7 +105,7 @@ TTY_STATS=$?;
 # paths to use
 PR_KEY="/home/dr/.ssh/id_rsa"
 REM_RC_PATH="/mnt/dr/servers/$HOST/running-config/$TS/"
-REM_HOST="dr1"
+REM_HOST="dr"
 REM_USER="dr"
 REM_USER_HOST="$REM_USER@$REM_HOST"
 LOG_FILE="/var/log/dr/$TS-$SCRIPT_NAME.log"
