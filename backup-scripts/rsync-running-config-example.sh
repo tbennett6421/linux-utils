@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Tyler Bennett <tbennett6421@gmail.com>
-# 2017-06-03
+# 2017-06-06
 #
 # This script rsyncs the given folders to a remote location.
 # On errors, the script writes to syslog, a flat file, and emails out to the admin
@@ -15,13 +15,15 @@
 # -R, --relative              use relative path names
 # -e, --rsh=COMMAND           specify the remote shell to use
 #
+# added in 2009 for versions of rsync > 3.06
+# https://stackoverflow.com/questions/27636129/rsync-skip-non-existing-files-on-source
+# --ignore-missing-args
+#
 # usage: pygmail [-h] -f from -t to -s subject -b body [-a attachment]
 #
 # Notes:
 # --log-file sucks; redirect stdout and stderr to tee for better logging capabilites
 #
-# @todo: ping rem server and fail loudly if it is down
-# @todo: check if the above works or not
 
 # constants
 EXIT_ERR_SUCCESS=0
@@ -74,7 +76,7 @@ HOST=`$HOSTNAME`
 if [ $B_MAIL -eq $BOOL_TRUE ]; then 
 	MAILER=`which pygmail`
 fi
-OPTS="-avhP --stats --relative"
+OPTS="-avhP --stats --relative --ignore-missing-args"
 
 # some definitions for logging
 SCRIPT_NAME=`basename "$0"`
@@ -89,7 +91,7 @@ then
 fi
 
 #######################################################
-#check for root, cuz you can't touch shit without root
+#check for root
 if [ "$EUID" -ne 0 ]; then 
 	echo "This program must be run as a privileged user"
   	exit $EXIT_ERR_SUDO
