@@ -119,7 +119,7 @@ TTY_STATS=$?;
 
 # paths to use
 PR_KEY="/home/dr/.ssh/id_rsa"
-REM_RC_PATH="/mnt/dr/servers/$HOST/fserver"
+REM_RC_PATH="/mnt/dr/servers/$HOST/fs"
 REM_HOST="dr"
 REM_USER="dr"
 REM_USER_HOST="$REM_USER@$REM_HOST"
@@ -127,7 +127,7 @@ LOG_FILE="/var/log/dr/$TS-$SCRIPT_NAME.log"
 
 ### ensure that ALL of your \ characters have absolutly no 
 ### whitespace after them, otherwise bash fucks up the rsync line
-RC="/mnt/nfs/fserver/"
+RC="/zfs/fs/"
 
 if [ $B_DEBUG -eq $BOOL_TRUE ]; then
 	echo "[Info]  : loaded RC local configs"

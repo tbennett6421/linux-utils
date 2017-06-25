@@ -117,6 +117,7 @@ LOG_FILE="/var/log/dr/$TS-$SCRIPT_NAME.log"
 RC="/etc/ssh/ \
 /etc/skel/ \
 /etc/network/ \
+/etc/ssmtp/ \
 /etc/hostname \
 /etc/hosts \
 /etc/group \
@@ -166,6 +167,7 @@ if [ $HASROLE_ZFS -eq $BOOL_TRUE ]; then
 	`$ZFS list > /tmp/zfs_list`
 	`$ZPOOL status > /tmp/zpool_status`
 	RC+=" /tmp/zfs_list \
+		  /etc/zfs/ \
 		  /tmp/zpool_status"
 fi
 
