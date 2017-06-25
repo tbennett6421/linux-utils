@@ -157,7 +157,9 @@ if [ $HASROLE_LAMP -eq $BOOL_TRUE ]; then
 fi
 
 if [ $HASROLE_MDADM -eq $BOOL_TRUE ]; then
-	RC+=" /etc/mdadm/"
+	RC+=" /etc/mdadm/ \
+		  /etc/smartmontools/ \
+		  /etc/smartd.conf"
 fi
 
 if [ $HASROLE_ZFS -eq $BOOL_TRUE ]; then
@@ -167,8 +169,11 @@ if [ $HASROLE_ZFS -eq $BOOL_TRUE ]; then
 	`$ZFS list > /tmp/zfs_list`
 	`$ZPOOL status > /tmp/zpool_status`
 	RC+=" /tmp/zfs_list \
+		  /tmp/zpool_status \
 		  /etc/zfs/ \
-		  /tmp/zpool_status"
+		  /etc/smartmontools/ \
+		  /etc/smartd.conf"
+
 fi
 
 if [ $HASROLE_BIND -eq $BOOL_TRUE ]; then
