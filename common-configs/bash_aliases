@@ -47,6 +47,8 @@ alias curl-follow='curl -O -J -L'
 alias rsync-copy="rsync -avhP"
 alias screen-name='screen -S'
 
+alias outmail="mail -a\"From:`hostname`@nsecure.me\""
+
 ### Safer commands ###
 alias mv='mv -i'
 alias cp='cp -i'
