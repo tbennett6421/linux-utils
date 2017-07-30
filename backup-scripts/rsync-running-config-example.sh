@@ -125,6 +125,7 @@ RC="/etc/ssh/ \
 /etc/fstab \
 /etc/rsyslog.conf \
 /etc/rsyslog.d/ \
+/etc/salt/ \
 /etc/rc.local \
 /etc/sudoers \
 /usr/local/bin/ \
