@@ -123,6 +123,8 @@ RC="/etc/ssh/ \
 /etc/group \
 /etc/passwd \
 /etc/fstab \
+/etc/rsyslog.conf \
+/etc/rsyslog.d/ \
 /etc/rc.local \
 /etc/sudoers \
 /usr/local/bin/ \
