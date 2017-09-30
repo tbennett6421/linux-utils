@@ -38,6 +38,13 @@
 "    -> Helper functions
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if !exists("g:os")
+    if has("win64") || has("win32") || has("win16")
+        let g:os = "Windows"
+    else
+        let g:os = substitute(system('uname'), '\n', '', '')
+    endif
+endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -135,8 +142,13 @@ nnoremap <space> za
 " Enable syntax highlighting
 syntax enable
 
-colorscheme elflord
-set background=dark
+if g:os == "Darwin"
+    colorscheme evening
+    set background=dark
+else
+    colorscheme elflord
+    set background=dark
+endif
 
 " Set extra options when running in GUI mode
 if has("gui_running")
