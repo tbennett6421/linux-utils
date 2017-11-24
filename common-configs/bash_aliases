@@ -122,6 +122,8 @@ alias nc-bash-bind='rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc -
 
 ### git ###
 alias git-old-file='git checkout HEAD -- '
+alias git-init='git config user.email tbennett6421@gmail.com && git config user.name "Tyler Bennett" && git config core.editor vim && git config diff.tool vimdiff && git config difftool.prompt false'
+
 
 ### Count lines of code
 alias phplines-summary='( find ./ -name '*.php' -print0 | xargs -0 cat ) | wc -l'
