@@ -240,3 +240,26 @@ if [ $RTC -ne $RTC_PING_ISUP ]; then
 else
 	info "Runtime check [ICMP] => passed"
 fi
+
+info "Runtime check [SSH]"
+if [ "$F_DEBUG" ]; then
+	debug "$SSH -i $SSH_PR_KEY $REM_USER_HOST \"exit;\" > /dev/null 2>&1"
+fi
+$SSH -i $SSH_PR_KEY $REM_USER_HOST "exit;" > /dev/null 2>&1
+RTC=$?
+if [ $RTC -eq $RTC_SSH_ERROR ]; then
+	msg="SSH had issues connecting to $REM_HOST ; exit code ($RTC)"	
+
+	printf "$msg\n";                ## output error msg
+	logger "$SCRIPT_NAME: $msg"     ## send to syslog
+	
+	mbody=$(ml_output "$msg")       ## compose email
+	if [ "$F_MAIL" ]; then
+		$MAILER -f "$FROM" -t "$TO" -s "$SUBJ" -b "$mbody"
+	fi
+	
+	exit $EXIT_ERR_SSH;
+
+else
+	info "Runtime check [SSH] => passed"
+fi
