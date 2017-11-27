@@ -31,8 +31,9 @@ REM_USER="dr"                         ## Username for remote system         ##!!
 REM_HOST="dr"                         ## Target remote system               ##!!
 REM_USER_HOST="$REM_USER@$REM_HOST"
 REM_BKUP_BASEDIR="/mnt/dr/crashplan"                                        ##!!
-BACKUP_FORMAT="servers/$HOST/running-config"
+BACKUP_FORMAT="servers/$HOST/running-config_duplicity"	  ##@@temporary location
 REM_BKUP_PATH="$REM_BKUP_BASEDIR/$BACKUP_FORMAT"
+REMOTE_URI="sftp://$REM_USER_HOST/$REM_BKUP_PATH"
 LOG_DIR='/var/log/dr'
 B_DEBUG=$BOOL_TRUE          ## should this program be verbose
 B_MAIL=$BOOL_TRUE           ## should this program use email subsystem
@@ -209,9 +210,10 @@ do
 done
 
 DUPL_BKUP_STR="duplicity "
-DUPL_BKUP_STR+="--ssh-options='-oIdentityFile=$SSH_PR_KEY'"
+DUPL_BKUP_STR+="-v4 --ssh-options='-oIdentityFile=$SSH_PR_KEY' "
 DUPL_BKUP_STR+="${DUPL_BKUP[*]}"        ## print entire array on one-line
 DUPL_BKUP_STR+=" --exclude '**' / "     ## space, exclude option
+DUPL_BKUP_STR+="$REMOTE_URI"
 ##@@DUPL_BKUP_STR+="sftp://tbennett@dr/dr-test -v4 --ssh-askpass"
 
 info "Loaded LOCAL_BKUP"
@@ -262,4 +264,13 @@ if [ $RTC -eq $RTC_SSH_ERROR ]; then
 
 else
 	info "Runtime check [SSH] => passed"
+fi
+
+## Finished runtime checks, determining TTY and performing backup
+if [ "$F_DEBUG" ]; then
+	debug "tty -s => $TTY_SETTING"
+fi
+
+if [ $TTY_SETTING -ne $RTC_TTY_IS_TERMINAL ]; then
+	info "Not running from interactive terminal [cron]"	
 fi
