@@ -137,3 +137,44 @@ function icmpreq(){
 ### Begin program execution and logic
 ########################################################################
 
+## Check for superuser, required to access restricted files for backup
+if [ "$EUID" -ne 0 ]; then 
+	echo "This program must be run as a privileged user"
+  	exit $EXIT_ERR_SUDO
+fi
+
+## Create log directory if not exist
+$MKDIR $LOG_DIR > /dev/null 2>&1
+
+## Execute HASROLE hooks ##
+
+if [ $HASROLE_LAMP -eq $BOOL_TRUE ]; then
+	## Ensure that root can login to mysql without requiring a password
+	## @link https://serverfault.com/questions/563714
+	MYSQLDUMP=`which mysqldump`
+	`$MYSQLDUMP --all-databases > /root/mysql_backup/alldb.sql`
+
+	LOCAL_BKUP+=('/etc/php/')
+	LOCAL_BKUP+=('/etc/mysql/')
+	LOCAL_BKUP+=('/etc/ssl/')
+	LOCAL_BKUP+=('/etc/apache2/')
+	LOCAL_BKUP+=('/var/www/')
+fi
+
+if [ $HASROLE_ZFS -eq $BOOL_TRUE ]; then
+	## ZFS info is stored in the pools, have to extract it
+	ZFS=`which zfs`
+	ZPOOL=`which zpool`
+	`$ZFS list > /tmp/zfs_list`
+	`$ZPOOL status > /tmp/zpool_status`
+
+	LOCAL_BKUP+=('/tmp/zfs_list')
+	LOCAL_BKUP+=('/tmp/zpool_status')
+	LOCAL_BKUP+=('/etc/zfs/')
+	LOCAL_BKUP+=('/etc/smartmontools/')
+	LOCAL_BKUP+=('/etc/smartd.conf')
+
+fi
+
+
+
