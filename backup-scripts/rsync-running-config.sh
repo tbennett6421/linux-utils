@@ -25,8 +25,9 @@ BOOL_FALSE=0
 SSH_PASSWORD='setme'   ##!!
 GPG_PASSWORD='setme'   ##!!
 LOG_DIR='/var/log/dr'
-B_DEBUG=$BOOL_TRUE          # should this program be verbose
-B_MAIL=$BOOL_TRUE           # should this program use email subsystem
-PING_COUNT=3                # number of ICMP packets to send to remote
-HASROLE_LAMP=$BOOL_FALSE	# Has Apache, MySQL, PHP?
-HASROLE_ZFS=$BOOL_FALSE 	# Has ZFS and ZPools?
+B_DEBUG=$BOOL_TRUE          ## should this program be verbose
+B_MAIL=$BOOL_TRUE           ## should this program use email subsystem
+PING_COUNT=3                ## number of ICMP packets to send to remote
+HASROLE_LAMP=$BOOL_FALSE	## Has Apache, MySQL, PHP?
+HASROLE_ZFS=$BOOL_FALSE 	## Has ZFS and ZPools?
+
