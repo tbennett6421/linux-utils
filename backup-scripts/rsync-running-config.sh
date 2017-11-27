@@ -17,13 +17,22 @@
 
 BOOL_TRUE=1
 BOOL_FALSE=0
+HOSTNAME=`which hostname`
+HOST=`$HOSTNAME`
 
-########################################################################
+################################################################################
 ### Begin configurable options;
 ### set options using $BOOL_TRUE, $BOOL_FALSE, 'stringvalues' or integer
-########################################################################
-SSH_PASSWORD='setme'   ##!!
-GPG_PASSWORD='setme'   ##!!
+################################################################################
+##@@SSH_PASSWORD='setme'                                                    ##!!
+GPG_PASSWORD='setme'                                                        ##!!
+SSH_PR_KEY="/home/dr/.ssh/id_rsa"     ## SSH key for remote login           ##!!
+REM_USER="dr"                         ## Username for remote system         ##!!
+REM_HOST="dr"                         ## Target remote system               ##!!
+REM_USER_HOST="$REM_USER@$REM_HOST"
+REM_BKUP_BASEDIR="/mnt/dr/crashplan"                                        ##!!
+BACKUP_FORMAT="servers/$HOST/running-config"
+REM_BKUP_PATH="$REM_BKUP_BASEDIR/$BACKUP_FORMAT"
 LOG_DIR='/var/log/dr'
 B_DEBUG=$BOOL_TRUE          ## should this program be verbose
 B_MAIL=$BOOL_TRUE           ## should this program use email subsystem
@@ -104,8 +113,6 @@ TIME=`which time`
 TEE=`which tee`
 TTY=`which tty`
 DATE=`which date`
-HOSTNAME=`which hostname`
-HOST=`$HOSTNAME`
 
 `$TTY -s`                   ## exec tty -s and capture exit status,
 TTY_SETTING=$?;             ## this will let us detect if running interactively
@@ -187,6 +194,7 @@ do
 done
 
 DUPL_BKUP_STR="duplicity "
+DUPL_BKUP_STR+="--ssh-options='-oIdentityFile=$SSH_PR_KEY'"
 DUPL_BKUP_STR+="${DUPL_BKUP[*]}"        ## print entire array on one-line
 DUPL_BKUP_STR+=" --exclude '**' / "     ## space, exclude option
 ##@@DUPL_BKUP_STR+="sftp://tbennett@dr/dr-test -v4 --ssh-askpass"
