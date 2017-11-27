@@ -132,10 +132,12 @@ fi
 #######################################################
 ### Begin definitions
 #######################################################
+function info()  { echo "[INFO]  : $1" ; }
+function debug() { echo "[DEBUG] : $1" ; }
 
 function icmpreq(){
-	if [ $B_DEBUG -eq $BOOL_TRUE ]; then
-		echo "[DEBUG] : $PING -q -c $PING_COUNT $1 > /dev/null 2>&1"
+	if [ "$F_DEBUG" ]; then
+		debug "$PING -q -c $PING_COUNT $1 > /dev/null 2>&1"
 	fi
     return `$PING -q -c $PING_COUNT $1 > /dev/null 2>&1`
 }
@@ -143,6 +145,9 @@ function icmpreq(){
 ########################################################################
 ### Begin program execution and logic
 ########################################################################
+
+## Set flags at runtime for program behavior
+if [ $B_DEBUG -eq $BOOL_TRUE ]; then F_DEBUG="true"; fi
 
 ## Check for superuser, required to access restricted files for backup
 if [ "$EUID" -ne 0 ]; then 
@@ -198,3 +203,10 @@ DUPL_BKUP_STR+="--ssh-options='-oIdentityFile=$SSH_PR_KEY'"
 DUPL_BKUP_STR+="${DUPL_BKUP[*]}"        ## print entire array on one-line
 DUPL_BKUP_STR+=" --exclude '**' / "     ## space, exclude option
 ##@@DUPL_BKUP_STR+="sftp://tbennett@dr/dr-test -v4 --ssh-askpass"
+
+if [ "$F_DEBUG" ]; then
+	info "loaded LOCAL_BKUP"
+	debug "LOCAL_BKUP => ${LOCAL_BKUP[*]}"
+	debug "DUPL_BKUP => ${DUPL_BKUP[*]}"
+	debug "DUPL_BKUP_STR => $DUPL_BKUP_STR"
+fi
