@@ -31,3 +31,62 @@ PING_COUNT=3                ## number of ICMP packets to send to remote
 HASROLE_LAMP=$BOOL_FALSE	## Has Apache, MySQL, PHP?
 HASROLE_ZFS=$BOOL_FALSE 	## Has ZFS and ZPools?
 
+########################################################################
+### Begin Constants and Definitions
+########################################################################
+EXIT_ERR_SUCCESS=0
+EXIT_ERR_SUDO=1
+EXIT_ERR_PING=2
+EXIT_ERR_SSH=3
+##@@EXIT_ERR_GREP=4
+##@@# Grep test and rsync errors
+##@@GREP_ERROR_TEST="rsync errors"
+##@@GREP_ERROR_STR=("rsync: link_stat")
+
+## see your relevant man pages or test using $?
+RTC_PING_ISUP=0
+RTC_SSH_ERROR=255;
+RTC_TTY_IS_TERMINAL=0
+
+## get program paths
+DUPLICITY=`which duplicity`
+PING=`which ping`
+SSH=`which ssh`
+NOHUP=`which nohup`
+GREP=`which grep`
+MKDIR=`which mkdir`
+TIME=`which time`
+TEE=`which tee`
+TTY=`which tty`
+DATE=`which date`
+HOSTNAME=`which hostname`
+HOST=`$HOSTNAME`
+
+`$TTY -s`                   ## exec tty -s and capture exit status,
+TTY_SETTING=$?;             ## this will let us detect if running interactively
+
+##@@OPTS="-avhP --stats --relative --ignore-missing-args"		
+SCRIPT_NAME=`basename "$0"`
+TIMESTAMP=`$DATE +%Y.%m.%d`
+
+if [ $B_MAIL -eq $BOOL_TRUE ]; then
+	FROM="setme"   ##!!
+	TO="setme"     ##!!
+	SUBJ="$HOST: $SCRIPT_NAME: error"
+	MAILER=`which pygmail`
+fi
+
+#######################################################
+### End definitions
+#######################################################
+
+function icmpreq(){
+	if [ $B_DEBUG -eq $BOOL_TRUE ]; then
+		echo "[DEBUG] : $PING -q -c $PING_COUNT $1 > /dev/null 2>&1"
+	fi
+    return `$PING -q -c $PING_COUNT $1 > /dev/null 2>&1`
+}
+
+#######################################################
+### End functions
+#######################################################
