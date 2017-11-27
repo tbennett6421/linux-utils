@@ -134,6 +134,15 @@ fi
 #######################################################
 function info()  { echo "[INFO]  : $1" ; }
 function debug() { echo "[DEBUG] : $1" ; }
+    
+function ml_output(){
+	local msg="$1
+	
+-------------------------------------------------------------------
+see the logfile located in $LOG_FILE or check syslog
+"
+	echo "$msg"
+}
 
 function icmpreq(){
 	if [ "$F_DEBUG" ]; then
@@ -148,6 +157,7 @@ function icmpreq(){
 
 ## Set flags at runtime for program behavior
 if [ $B_DEBUG -eq $BOOL_TRUE ]; then F_DEBUG="true"; fi
+if [ $B_MAIL -eq $BOOL_TRUE ]; then F_MAIL="true"; fi
 
 ## Check for superuser, required to access restricted files for backup
 if [ "$EUID" -ne 0 ]; then 
@@ -204,9 +214,29 @@ DUPL_BKUP_STR+="${DUPL_BKUP[*]}"        ## print entire array on one-line
 DUPL_BKUP_STR+=" --exclude '**' / "     ## space, exclude option
 ##@@DUPL_BKUP_STR+="sftp://tbennett@dr/dr-test -v4 --ssh-askpass"
 
+info "Loaded LOCAL_BKUP"
 if [ "$F_DEBUG" ]; then
-	info "loaded LOCAL_BKUP"
 	debug "LOCAL_BKUP => ${LOCAL_BKUP[*]}"
 	debug "DUPL_BKUP => ${DUPL_BKUP[*]}"
 	debug "DUPL_BKUP_STR => $DUPL_BKUP_STR"
+fi
+
+## Performing runtime checks
+info "Runtime check [ICMP]"
+icmpreq "$REM_HOST"
+RTC=$?
+if [ $RTC -ne $RTC_PING_ISUP ]; then
+	msg="$REM_HOST is not responding to ICMP echo requests ; error code ($RTC)"	
+	printf "$msg\n";                ## output error msg
+	logger "$SCRIPT_NAME: $msg"     ## send to syslog
+	
+	mbody=$(ml_output "$msg")       ## compose email
+	if [ "$F_MAIL" ]; then
+		$MAILER -f "$FROM" -t "$TO" -s "$SUBJ" -b "$mbody"
+	fi
+	
+	exit $EXIT_ERR_PING;
+
+else
+	info "Runtime check [ICMP] => passed"
 fi
