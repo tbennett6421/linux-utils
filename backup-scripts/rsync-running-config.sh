@@ -31,6 +31,51 @@ PING_COUNT=3                ## number of ICMP packets to send to remote
 HASROLE_LAMP=$BOOL_FALSE	## Has Apache, MySQL, PHP?
 HASROLE_ZFS=$BOOL_FALSE 	## Has ZFS and ZPools?
 
+## LOCAL_BKUP "should" contain the vast majority of directories/files to backup
+## special directories/files that are unique should be managed through a HASROLE hook
+LOCAL_BKUP=(
+'/etc/bind/'
+'/etc/cron.d'
+'/etc/cron.daily'
+'/etc/cron.hourly'
+'/etc/cron.monthly'
+'/etc/crontab'
+'/etc/cron.weekly'
+'/etc/exports/'
+'/etc/fstab'
+'/etc/group'
+'/etc/hostname'
+'/etc/hosts'
+'/etc/hosts.allow'
+'/etc/hosts.deny'
+'/etc/logrotate.conf'
+'/etc/logrotate.d/'
+'/etc/lsb-release'
+'/etc/network/'
+'/etc/nsswitch.conf'
+'/etc/pam.conf'
+'/etc/pam.d/'
+'/etc/passwd'
+'/etc/rc.local'
+'/etc/rsync-exclude-list.txt'
+'/etc/rsyslog.conf'
+'/etc/rsyslog.d/'
+'/etc/salt/'
+'/etc/samba/'
+'/etc/security/'
+'/etc/shells/'
+'/etc/skel/'
+'/etc/ssh'
+'/etc/ssmtp/'
+'/etc/sudoers'
+'/etc/sudoers.d/'
+'/usr/local/bin/'
+'/var/prtg/'
+'/var/spool/cron/crontabs/'
+'/home/'
+'/root/'
+)
+
 ########################################################################
 ### Begin Constants and Definitions
 ########################################################################
@@ -68,6 +113,7 @@ TTY_SETTING=$?;             ## this will let us detect if running interactively
 ##@@OPTS="-avhP --stats --relative --ignore-missing-args"		
 SCRIPT_NAME=`basename "$0"`
 TIMESTAMP=`$DATE +%Y.%m.%d`
+LOG_FILE="$LOG_DIR/$TIMESTAMP-$SCRIPT_NAME.log"
 
 if [ $B_MAIL -eq $BOOL_TRUE ]; then
 	FROM="setme"   ##!!
@@ -77,7 +123,7 @@ if [ $B_MAIL -eq $BOOL_TRUE ]; then
 fi
 
 #######################################################
-### End definitions
+### Begin definitions
 #######################################################
 
 function icmpreq(){
@@ -87,6 +133,7 @@ function icmpreq(){
     return `$PING -q -c $PING_COUNT $1 > /dev/null 2>&1`
 }
 
-#######################################################
-### End functions
-#######################################################
+########################################################################
+### Begin program execution and logic
+########################################################################
+
