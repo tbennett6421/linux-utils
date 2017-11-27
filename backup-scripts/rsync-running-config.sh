@@ -176,5 +176,17 @@ if [ $HASROLE_ZFS -eq $BOOL_TRUE ]; then
 
 fi
 
+## After HASROLE hooks have finished, and LOCAL_BKUP has been
+## finalized, transform LOCAL_BKUP into a duplicity include/exclude 
+## string to create a single backup chain.
+DUPL_BKUP=()
+for i in "${LOCAL_BKUP[@]}"
+do
+	var="--include $i"
+	DUPL_BKUP+=("$var")	
+done
 
-
+DUPL_BKUP_STR="duplicity "
+DUPL_BKUP_STR+="${DUPL_BKUP[*]}"        ## print entire array on one-line
+DUPL_BKUP_STR+=" --exclude '**' / "     ## space, exclude option
+##@@DUPL_BKUP_STR+="sftp://tbennett@dr/dr-test -v4 --ssh-askpass"
