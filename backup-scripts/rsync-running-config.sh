@@ -209,8 +209,7 @@ do
 	DUPL_BKUP+=("$var")	
 done
 
-DUPL_BKUP_STR="duplicity "
-DUPL_BKUP_STR+="-v4 --ssh-options='-oIdentityFile=$SSH_PR_KEY' "
+DUPL_BKUP_STR="-v4 --ssh-options='-oIdentityFile=$SSH_PR_KEY' "
 DUPL_BKUP_STR+="${DUPL_BKUP[*]}"        ## print entire array on one-line
 DUPL_BKUP_STR+=" --exclude '**' / "     ## space, exclude option
 DUPL_BKUP_STR+="$REMOTE_URI"
@@ -271,6 +270,28 @@ if [ "$F_DEBUG" ]; then
 	debug "tty -s => $TTY_SETTING"
 fi
 
-if [ $TTY_SETTING -ne $RTC_TTY_IS_TERMINAL ]; then
-	info "Not running from interactive terminal [cron]"	
+if [ $TTY_SETTING -eq $RTC_TTY_IS_TERMINAL ]; then
+	info "Running from interactive terminal"
+	if [ "$F_DEBUG" ]; then
+		debug "exporting PASSPHRASE"
+		debug "exec \\ $NOHUP $TIME $DUPLICITY $DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE"
+		debug "unsetting PASSPHRASE"
+	fi
+	
+	export PASSPHRASE=$GPG_PASSWORD
+	eval $NOHUP $TIME $DUPLICITY $DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE
+	unset PASSPHRASE
+
+else
+	info "Running from non-interactive terminal"
+	if [ "$F_DEBUG" ]; then
+		debug "exporting PASSPHRASE"
+		debug "exec \\ $TIME $DUPLICITY $DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE"
+		debug "unsetting PASSPHRASE"
+	fi
+	
+	export PASSPHRASE=$GPG_PASSWORD
+	eval $TIME $DUPLICITY $DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE
+	unset PASSPHRASE
+
 fi
