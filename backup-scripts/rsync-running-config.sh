@@ -168,9 +168,46 @@ function icmpreq(){
 ### Begin program execution and logic
 ########################################################################
 
+###### CLI Parsing ######
+while [[ $# > 0 ]]
+do
+key="$1"
+
+case $key in
+    -f|--full)
+    F_FULL="true"
+    shift
+    ;;
+    -i|--incremental)
+    F_INCREMENTAL="true"
+    shift
+    ;;
+    -d|--debug)
+    F_DEBUG="true"
+    shift
+    ;;
+    -h|--help)
+    F_HELP="true"
+    shift
+    ;;
+    *)	## unknown option
+    shift
+    ;;	## do nothing
+esac
+done
+###### END CLI Parsing ######
+
+if [ "$F_INCREMENTAL" ] && [ "$F_FULL" ]; then
+	fatal "Unable to do an incremental and full backup set"
+	usage
+fi
+if [ "$F_HELP" ]; then usage; fi
+
 ## Set flags at runtime for program behavior
-if [ $B_DEBUG -eq $BOOL_TRUE ]; then F_DEBUG="true"; fi
 if [ $B_MAIL -eq $BOOL_TRUE ]; then F_MAIL="true"; fi
+if [ "$F_INCREMENTAL" ]; then F_MODE="incremental"; fi
+if [ "$F_FULL" ]; then F_MODE="full"; fi
+if [ -z "$F_MODE" ]; then F_MODE="full"; fi
 
 ## Check for superuser, required to access restricted files for backup
 if [ "$EUID" -ne 0 ]; then 
@@ -221,11 +258,10 @@ do
 	DUPL_BKUP+=("$var")	
 done
 
-DUPL_BKUP_STR="-v4 --ssh-options='-oIdentityFile=$SSH_PR_KEY' "
+DUPL_BKUP_STR="$F_MODE -v4 --ssh-options='-oIdentityFile=$SSH_PR_KEY' "
 DUPL_BKUP_STR+="${DUPL_BKUP[*]}"        ## print entire array on one-line
 DUPL_BKUP_STR+=" --exclude '**' / "     ## space, exclude option
 DUPL_BKUP_STR+="$REMOTE_URI"
-##@@DUPL_BKUP_STR+="sftp://tbennett@dr/dr-test -v4 --ssh-askpass"
 
 info "Loaded LOCAL_BKUP"
 if [ "$F_DEBUG" ]; then
