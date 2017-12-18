@@ -24,7 +24,6 @@ HOST=`$HOSTNAME`
 ### Begin configurable options;
 ### set options using $BOOL_TRUE, $BOOL_FALSE, 'stringvalues' or integer
 ################################################################################
-##@@SSH_PASSWORD='setme'                                                    ##!!
 GPG_PASSWORD='setme'                                                        ##!!
 SSH_PR_KEY="/home/dr/.ssh/id_rsa"     ## SSH key for remote login           ##!!
 REM_USER="dr"                         ## Username for remote system         ##!!
@@ -35,7 +34,6 @@ BACKUP_FORMAT="servers/$HOST/running-config_duplicity"	  ##@@temporary location
 REM_BKUP_PATH="$REM_BKUP_BASEDIR/$BACKUP_FORMAT"
 REMOTE_URI="pexpect+sftp://$REM_USER_HOST/$REM_BKUP_PATH"
 LOG_DIR='/var/log/dr'
-B_DEBUG=$BOOL_TRUE          ## should this program be verbose
 B_MAIL=$BOOL_TRUE           ## should this program use email subsystem
 PING_COUNT=3                ## number of ICMP packets to send to remote
 HASROLE_LAMP=$BOOL_FALSE	## Has Apache, MySQL, PHP?
@@ -90,10 +88,11 @@ LOCAL_BKUP=(
 ### Begin Constants and Definitions
 ########################################################################
 EXIT_ERR_SUCCESS=0
-EXIT_ERR_SUDO=1
-EXIT_ERR_PING=2
-EXIT_ERR_SSH=3
-##@@EXIT_ERR_GREP=4
+EXIT_ERR_USAGE=1
+EXIT_ERR_SUDO=2
+EXIT_ERR_PING=3
+EXIT_ERR_SSH=4
+##@@EXIT_ERR_GREP=5
 ##@@# Grep test and rsync errors
 ##@@GREP_ERROR_TEST="rsync errors"
 ##@@GREP_ERROR_STR=("rsync: link_stat")
@@ -135,6 +134,19 @@ fi
 #######################################################
 function info()  { echo "[INFO]  : $1" ; }
 function debug() { echo "[DEBUG] : $1" ; }
+function fatal() { echo "[FATAL] : $1" ; }
+
+function usage(){
+    cat <<-EOF
+    duplbk.sh [flags]
+    
+    -f|--full            sets backup mode to full (default)
+    -i|--incremental     sets backup mode to incremental
+    -d|--debug           enable debugging output
+    -h|--help            prints this help menu.
+EOF
+exit $EXIT_ERR_USAGE
+}
     
 function ml_output(){
 	local msg="$1
