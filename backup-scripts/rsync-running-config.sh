@@ -92,7 +92,7 @@ EXIT_ERR_USAGE=1
 EXIT_ERR_SUDO=2
 EXIT_ERR_PING=3
 EXIT_ERR_SSH=4
-##@@EXIT_ERR_GREP=5
+EXIT_ERR_GREP=5
 ##@@# Grep test and rsync errors
 ##@@GREP_ERROR_TEST="rsync errors"
 ##@@GREP_ERROR_STR=("rsync: link_stat")
@@ -117,7 +117,6 @@ DATE=`which date`
 `$TTY -s`                   ## exec tty -s and capture exit status,
 TTY_SETTING=$?;             ## this will let us detect if running interactively
 
-##@@OPTS="-avhP --stats --relative --ignore-missing-args"		
 SCRIPT_NAME=`basename "$0"`
 TIMESTAMP=`$DATE +%Y.%m.%d`
 LOG_FILE="$LOG_DIR/$TIMESTAMP-$SCRIPT_NAME.log"
@@ -138,7 +137,7 @@ function fatal() { echo "[FATAL] : $1" ; }
 
 function usage(){
     cat <<-EOF
-    duplbk.sh [flags]
+    $SCRIPT_NAME.sh [flags]
     
     -f|--full            sets backup mode to full (default)
     -i|--incremental     sets backup mode to incremental
@@ -329,7 +328,6 @@ if [ $TTY_SETTING -eq $RTC_TTY_IS_TERMINAL ]; then
 	export PASSPHRASE=$GPG_PASSWORD
 	eval $NOHUP $TIME $DUPLICITY $DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE
 	unset PASSPHRASE
-
 else
 	info "Running from non-interactive terminal"
 	if [ "$F_DEBUG" ]; then
@@ -341,5 +339,22 @@ else
 	export PASSPHRASE=$GPG_PASSWORD
 	eval $TIME $DUPLICITY $DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE
 	unset PASSPHRASE
+fi
 
+RET=`grep "Errors" $LOG_FILE`
+# check if error
+if [ "$RET" != "Errors 0" ]; then
+	msg="There was an unknown error"
+
+	printf "$msg\n";                ## output error msg
+	logger "$SCRIPT_NAME: $msg"     ## send to syslog
+
+	mbody=$(ml_output "$msg")       ## compose email
+	if [ "$F_MAIL" ]; then
+		$MAILER -f "$FROM" -t "$TO" -s "$SUBJ" -b "$mbody"
+	fi
+
+	exit $EXIT_ERR_GREP;
+else
+	exit $EXIT_ERR_SUCCESS;
 fi
