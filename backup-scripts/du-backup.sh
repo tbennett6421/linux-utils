@@ -172,7 +172,6 @@ function set_GPG(){
         echo "$F_GPG_FILE does not exist"
         exit
     fi
-
 }
 
 ########################################################################
