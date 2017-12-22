@@ -24,7 +24,6 @@ HOST=`$HOSTNAME`
 ### Begin configurable options;
 ### set options using $BOOL_TRUE, $BOOL_FALSE, 'stringvalues' or integer
 ################################################################################
-GPG_PASSWORD='setme'                                                        ##!!
 SSH_PR_KEY="/home/dr/.ssh/id_rsa"     ## SSH key for remote login           ##!!
 REM_USER="dr"                         ## Username for remote system         ##!!
 REM_HOST="dr"                         ## Target remote system               ##!!
@@ -165,15 +164,6 @@ function icmpreq(){
     return `$PING -q -c $PING_COUNT $1 > /dev/null 2>&1`
 }
 
-function set_GPG(){
-    if [ -e "$F_GPG_FILE" ]; then 
-        GPG_PASSWORD=`$CAT $F_GPG_FILE`
-    else
-        echo "$F_GPG_FILE does not exist"
-        exit
-    fi
-}
-
 ########################################################################
 ### Begin program execution and logic
 ########################################################################
@@ -200,15 +190,6 @@ case $key in
     F_HELP="true"
     shift
     ;;
-    -g|--gpg)
-    F_GPG="true"
-    if [ -z "$2" ]; then
-        usage
-    else
-        F_GPG_FILE=$2;
-    fi
-    shift 2
-    ;;
     *)	## unknown option
     echo "unknown option $key"
     exit
@@ -229,7 +210,6 @@ if [ $B_MAIL -eq $BOOL_TRUE ]; then F_MAIL="true"; fi
 if [ "$F_INCREMENTAL" ]; then F_MODE="incremental"; fi
 if [ "$F_FULL" ]; then F_MODE="full"; fi
 if [ -z "$F_MODE" ]; then F_MODE="full"; fi
-if [ "$F_GPG" ]; then set_GPG; fi
 
 ## Check for superuser, required to access restricted files for backup
 if [ "$EUID" -ne 0 ]; then 
@@ -351,9 +331,7 @@ if [ $TTY_SETTING -eq $RTC_TTY_IS_TERMINAL ]; then
 		debug "unsetting PASSPHRASE"
 	fi
 	
-	export PASSPHRASE=$GPG_PASSWORD
 	eval $NOHUP $TIME $DUPLICITY $DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE
-	unset PASSPHRASE
 else
 	info "Running from non-interactive terminal"
 	if [ "$F_DEBUG" ]; then
@@ -362,9 +340,7 @@ else
 		debug "unsetting PASSPHRASE"
 	fi
 	
-	export PASSPHRASE=$GPG_PASSWORD
 	eval $TIME $DUPLICITY $DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE
-	unset PASSPHRASE
 fi
 
 RET=`grep "Errors" $LOG_FILE`
