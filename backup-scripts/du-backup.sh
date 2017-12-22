@@ -105,6 +105,7 @@ RTC_TTY_IS_TERMINAL=0
 ## get program paths
 DUPLICITY=`which duplicity`
 PING=`which ping`
+CAT=`which cat`
 SSH=`which ssh`
 NOHUP=`which nohup`
 GREP=`which grep`
@@ -136,13 +137,14 @@ function debug() { echo "[DEBUG] : $1" ; }
 function fatal() { echo "[FATAL] : $1" ; }
 
 function usage(){
-    cat <<-EOF
-    SCRIPT_NAME.sh [flags]
+    $CAT <<-EOF
+    $SCRIPT_NAME.sh [flags]
     
     -f|--full            sets backup mode to full (default)
     -i|--incremental     sets backup mode to incremental
     -d|--debug           enable debugging output
     -h|--help            prints this help menu.
+    -g|--gpg <file>      specifies a file containing the passphrase to set
 EOF
 exit $EXIT_ERR_USAGE
 }
@@ -161,6 +163,16 @@ function icmpreq(){
 		debug "$PING -q -c $PING_COUNT $1 > /dev/null 2>&1"
 	fi
     return `$PING -q -c $PING_COUNT $1 > /dev/null 2>&1`
+}
+
+function set_GPG(){
+    if [ -e "$F_GPG_FILE" ]; then 
+        GPG_PASSWORD=`$CAT $F_GPG_FILE`
+    else
+        echo "$F_GPG_FILE does not exist"
+        exit
+    fi
+
 }
 
 ########################################################################
@@ -189,7 +201,18 @@ case $key in
     F_HELP="true"
     shift
     ;;
+    -g|--gpg)
+    F_GPG="true"
+    if [ -z "$2" ]; then
+        usage
+    else
+        F_GPG_FILE=$2;
+    fi
+    shift 2
+    ;;
     *)	## unknown option
+    echo "unknown option $key"
+    exit
     shift
     ;;	## do nothing
 esac
@@ -207,12 +230,16 @@ if [ $B_MAIL -eq $BOOL_TRUE ]; then F_MAIL="true"; fi
 if [ "$F_INCREMENTAL" ]; then F_MODE="incremental"; fi
 if [ "$F_FULL" ]; then F_MODE="full"; fi
 if [ -z "$F_MODE" ]; then F_MODE="full"; fi
+if [ "$F_GPG" ]; then set_GPG; fi
 
 ## Check for superuser, required to access restricted files for backup
 if [ "$EUID" -ne 0 ]; then 
 	echo "This program must be run as a privileged user"
   	exit $EXIT_ERR_SUDO
 fi
+
+## @todo: check for all programs required to run this program
+##        --fatal errors when duplicity is not installed, possible remediate
 
 ## Create log directory if not exist
 $MKDIR $LOG_DIR > /dev/null 2>&1
