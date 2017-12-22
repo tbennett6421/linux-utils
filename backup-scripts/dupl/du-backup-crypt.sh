@@ -283,7 +283,7 @@ do
 	DUPL_BKUP+=("$var")	
 done
 
-DUPL_BKUP_STR="$F_MODE --no-encryption -v4 --ssh-options='-oIdentityFile=$SSH_PR_KEY' "
+DUPL_BKUP_STR="$F_MODE -v4 --ssh-options='-oIdentityFile=$SSH_PR_KEY' "
 DUPL_BKUP_STR+="${DUPL_BKUP[*]}"        ## print entire array on one-line
 DUPL_BKUP_STR+=" --exclude '**' / "     ## space, exclude option
 DUPL_BKUP_STR+="$REMOTE_URI"
