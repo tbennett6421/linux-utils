@@ -5,20 +5,9 @@ alias ports='netstat -tulanp'
 alias now='date +"%T"'
 alias nowtime='now'
 alias nowdate='date +"%d-%m-%Y"'
+alias checksum='rhash -r --md5 -p "%h, %p\n"'
 alias beep='echo -e "\a\c"'
 alias beep-lots='while :; do beep; sleep 1; done'
-alias checksum='rhash -r --md5 -p "%h, %p\n"'
-
-#helper commands for other aliases
-	alias all-users-with-bash-shell='getent passwd | grep /bin/bash | grep -v root | cut -d":" -f1'
-	# fetch latest aliases and put them in /root and /etc/skel/
-	alias github-new-aliases='sudo wget "https://raw.githubusercontent.com/tbennett6421/linux-utils/master/common-configs/bash_aliases" -O /etc/skel/.bash_aliases'
-	# fetch latest vim and put them in /root and /etc/skel/
-	alias github-new-vim='sudo mkdir -pv /etc/skel/.vim/plugin ; sudo mkdir -pv /root/.vim/plugin ; sudo wget "https://raw.githubusercontent.com/tbennett6421/linux-utils/master/common-configs/vimrc" -O /root/.vimrc ; sudo wget "https://raw.githubusercontent.com/tbennett6421/linux-utils/master/common-configs/vimrc" -O /etc/skel/.vimrc ; sudo wget "https://raw.githubusercontent.com/tbennett6421/linux-utils/master/common-configs/vim/plugin/IndexedSearch.vim" -O /root/.vim/plugin/IndexedSearch.vim ; sudo wget "https://raw.githubusercontent.com/tbennett6421/linux-utils/master/common-configs/vim/plugin/IndexedSearch.vim" -O /etc/skel/.vim/plugin/IndexedSearch.vim '
-	# distribute /etc/skel/ to all home dirs
-	alias distribute-github-stuff='for i in $(all-users-with-bash-shell); do sudo rsync -avh --progress /etc/skel/.bash_aliases /etc/skel/.vim* /home/$i/; sudo chown -R $i:$i /home/$i/.bash_aliases /home/$i/.vim* ; done'
-	# remove etc/skel/, root, and all bash users bash_aliases and vim stuff
-	alias cleanup-github-stuff='sudo rm -rf /etc/skel/.vim* /etc/skel/.bash_aliases /root/.bash_aliases /root/.vim* ; for i in $(all-users-with-bash-shell); do sudo rm -rf /home/$i/.bash_aliases /home/$i/.vim*; done'
 
 # updating stuff
 alias update-sys='sudo apt-get update && sudo apt-get upgrade'
@@ -33,8 +22,6 @@ alias ldir='ls -d */'
 alias ll="ls -la"
 alias ls-size="ll -lAS && echo '-------------Smallest-----'"
 alias ls-time="ls -lAt && echo '-------------Oldest-----'"
-alias df='df -H'
-alias du='du -ch'				#grand-total human readable
 alias mkdir='mkdir -pv' 		#create parent dirs on demand
 alias chown='chown --preserve-root'
 alias chmod='chmod --preserve-root'
