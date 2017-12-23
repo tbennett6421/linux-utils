@@ -41,6 +41,7 @@ HASROLE_ZFS=$BOOL_FALSE 	## Has ZFS and ZPools?
 ## LOCAL_BKUP "should" contain the vast majority of directories/files to backup
 ## special directories/files that are unique should be managed through a HASROLE hook
 LOCAL_BKUP=(
+'/etc/asterisk'
 '/etc/bind/'
 '/etc/cron.d'
 '/etc/cron.daily'
@@ -76,6 +77,7 @@ LOCAL_BKUP=(
 '/etc/ssmtp/'
 '/etc/sudoers'
 '/etc/sudoers.d/'
+'/srv/salt'
 '/usr/local/bin/'
 '/var/prtg/'
 '/var/spool/cron/crontabs/'
