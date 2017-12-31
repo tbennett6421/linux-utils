@@ -29,7 +29,7 @@ REM_USER="dr"                         ## Username for remote system         ##!!
 REM_HOST="dr"                         ## Target remote system               ##!!
 REM_USER_HOST="$REM_USER@$REM_HOST"
 REM_BKUP_BASEDIR="/dr"                                                      ##!!
-BACKUP_FORMAT="servers/$HOST/running-config_duplicity"	  ##@@temporary location
+BACKUP_FORMAT="servers/$HOST/running-config"
 REM_BKUP_PATH="$REM_BKUP_BASEDIR/$BACKUP_FORMAT"
 REMOTE_URI="pexpect+sftp://$REM_USER_HOST/$REM_BKUP_PATH"
 LOG_DIR='/var/log/dr'
@@ -41,7 +41,6 @@ HASROLE_ZFS=$BOOL_FALSE 	## Has ZFS and ZPools?
 ## LOCAL_BKUP "should" contain the vast majority of directories/files to backup
 ## special directories/files that are unique should be managed through a HASROLE hook
 LOCAL_BKUP=(
-'/etc/asterisk'
 '/etc/bind/'
 '/etc/cron.d'
 '/etc/cron.daily'
@@ -77,7 +76,6 @@ LOCAL_BKUP=(
 '/etc/ssmtp/'
 '/etc/sudoers'
 '/etc/sudoers.d/'
-'/srv/salt'
 '/usr/local/bin/'
 '/var/prtg/'
 '/var/spool/cron/crontabs/'
@@ -124,8 +122,8 @@ TIMESTAMP=`$DATE +%Y.%m.%d`
 LOG_FILE="$LOG_DIR/$TIMESTAMP-$SCRIPT_NAME.log"
 
 if [ $B_MAIL -eq $BOOL_TRUE ]; then
-	FROM="setme"   ##!!
-	TO="setme"     ##!!
+    FROM="tbennett6421@gmail.com"
+    TO="tbennett6421@gmail.com"
 	SUBJ="$HOST: $SCRIPT_NAME: error"
 	MAILER=`which pygmail`
 fi
