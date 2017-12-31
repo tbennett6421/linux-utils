@@ -88,7 +88,7 @@ function fatal() { echo "[FATAL] : $1" ; }
 function usage(){
     $CAT <<-EOF
     $SCRIPT_NAME.sh [flags]
-    
+    -n|--number <#>      the number of backup chains to keep
     -d|--debug           enable debugging output
     -h|--help            prints this help menu.
 EOF
@@ -129,6 +129,24 @@ case $key in
     F_HELP="true"
     shift
     ;;
+    -n|--number)
+        F_NUMBER="true"
+        if [ -z "$2" ]; then
+            usage
+        else
+            re='^[0-9]+$'
+            if ! [[ $2 =~ $re ]] ; then
+                echo "Error: Not a number" >&2;
+                usage
+            fi
+            if [ "$2" -lt "1" ]; then
+                echo "Error: number cannot be less then 1" >&2;
+                usage
+            fi
+            declare -i F_NUMBER_VAL=$2;
+        fi
+    shift 2
+    ;;  
     *)	## unknown option
     echo "unknown option $key"
     exit
@@ -146,13 +164,13 @@ if [ $B_MAIL -eq $BOOL_TRUE ]; then F_MAIL="true"; fi
 ## Create log directory if not exist
 $MKDIR $LOG_DIR > /dev/null 2>&1
 
-DUPL_STR="remove-all-but-n-full 1 --force -v4 --ssh-options='-oIdentityFile=$SSH_PR_KEY' "
+DUPL_STR="remove-all-but-n-full $F_NUMBER_VAL --force -v4 --ssh-options='-oIdentityFile=$SSH_PR_KEY' "
 DUPL_STR+="$REMOTE_URI"
 
 if [ "$F_DEBUG" ]; then
 	debug "DUPL_STR => $DUPL_STR"
 fi
-
+exit
 ## Performing runtime checks
 info "Runtime check [ICMP]"
 icmpreq "$REM_HOST"
