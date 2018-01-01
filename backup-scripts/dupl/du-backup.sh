@@ -192,11 +192,11 @@ case $key in
     shift
     ;;
     --hasrole-lamp)
-    F_HASROLE_LAMP=$BOOL_TRUE
+    HASROLE_LAMP=$BOOL_TRUE
     shift
     ;;
     --hasrole-zfs)
-    F_HASROLE_ZFS=$BOOL_TRUE
+    HASROLE_ZFS=$BOOL_TRUE
     shift
     ;;
     *)	## unknown option
