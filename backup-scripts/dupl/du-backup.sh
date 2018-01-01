@@ -28,15 +28,15 @@ SSH_PR_KEY="/home/dr/.ssh/id_rsa"     ## SSH key for remote login           ##!!
 REM_USER="dr"                         ## Username for remote system         ##!!
 REM_HOST="dr"                         ## Target remote system               ##!!
 REM_USER_HOST="$REM_USER@$REM_HOST"
-REM_BKUP_BASEDIR="/dr"                                                      ##!!
-BACKUP_FORMAT="servers/$HOST/running-config"
-REM_BKUP_PATH="$REM_BKUP_BASEDIR/$BACKUP_FORMAT"
-REMOTE_URI="pexpect+sftp://$REM_USER_HOST/$REM_BKUP_PATH"
+REM_BASEDIR="/dr/servers"                                                   ##!!
+REM_FINALDIR="running-config"                                               ##!!
+REM_PATH="$REM_BASEDIR/$HOST/$REM_FINALDIR"
+REMOTE_URI="pexpect+sftp://$REM_USER_HOST/$REM_PATH"
 LOG_DIR='/var/log/dr'
-B_MAIL=$BOOL_TRUE           ## should this program use email subsystem
-PING_COUNT=3                ## number of ICMP packets to send to remote
-HASROLE_LAMP=$BOOL_FALSE	## Has Apache, MySQL, PHP?
-HASROLE_ZFS=$BOOL_FALSE 	## Has ZFS and ZPools?
+B_MAIL=$BOOL_TRUE
+PING_COUNT=3
+HASROLE_LAMP=$BOOL_FALSE
+HASROLE_ZFS=$BOOL_FALSE
 
 ## LOCAL_BKUP "should" contain the vast majority of directories/files to backup
 ## special directories/files that are unique should be managed through a HASROLE hook
@@ -143,7 +143,8 @@ function usage(){
     -i|--incremental     sets backup mode to incremental
     -d|--debug           enable debugging output
     -h|--help            prints this help menu.
-    -g|--gpg <file>      specifies a file containing the passphrase to set
+    --hasrole-lamp       sets hook to backup webserver stack
+    --hasrole-zfs        sets hook to backup zfs pools
 EOF
 exit $EXIT_ERR_USAGE
 }
@@ -178,7 +179,7 @@ case $key in
     F_FULL="true"
     shift
     ;;
-    -i|--incremental)
+    -i|--inc|--incremental)
     F_INCREMENTAL="true"
     shift
     ;;
@@ -188,6 +189,14 @@ case $key in
     ;;
     -h|--help)
     F_HELP="true"
+    shift
+    ;;
+    --hasrole-lamp)
+    F_HASROLE_LAMP=$BOOL_TRUE
+    shift
+    ;;
+    --hasrole-zfs)
+    F_HASROLE_ZFS=$BOOL_TRUE
     shift
     ;;
     *)	## unknown option
@@ -225,7 +234,7 @@ $MKDIR $LOG_DIR > /dev/null 2>&1
 
 ## Execute HASROLE hooks ##
 
-if [ $HASROLE_LAMP -eq $BOOL_TRUE ]; then
+if [ $F_HASROLE_LAMP -eq $BOOL_TRUE ]; then
 	## Ensure that root can login to mysql without requiring a password
 	## @link https://serverfault.com/questions/563714
 	MYSQLDUMP=`which mysqldump`
@@ -238,7 +247,7 @@ if [ $HASROLE_LAMP -eq $BOOL_TRUE ]; then
 	LOCAL_BKUP+=('/var/www/')
 fi
 
-if [ $HASROLE_ZFS -eq $BOOL_TRUE ]; then
+if [ $F_HASROLE_ZFS -eq $BOOL_TRUE ]; then
 	## ZFS info is stored in the pools, have to extract it
 	ZFS=`which zfs`
 	ZPOOL=`which zpool`
