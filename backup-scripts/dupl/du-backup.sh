@@ -234,7 +234,7 @@ $MKDIR $LOG_DIR > /dev/null 2>&1
 
 ## Execute HASROLE hooks ##
 
-if [ $F_HASROLE_LAMP -eq $BOOL_TRUE ]; then
+if [ $HASROLE_LAMP -eq $BOOL_TRUE ]; then
 	## Ensure that root can login to mysql without requiring a password
 	## @link https://serverfault.com/questions/563714
 	MYSQLDUMP=`which mysqldump`
@@ -247,7 +247,7 @@ if [ $F_HASROLE_LAMP -eq $BOOL_TRUE ]; then
 	LOCAL_BKUP+=('/var/www/')
 fi
 
-if [ $F_HASROLE_ZFS -eq $BOOL_TRUE ]; then
+if [ $HASROLE_ZFS -eq $BOOL_TRUE ]; then
 	## ZFS info is stored in the pools, have to extract it
 	ZFS=`which zfs`
 	ZPOOL=`which zpool`
