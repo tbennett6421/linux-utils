@@ -27,7 +27,6 @@ NC='\033[0m'
 ### Begin configurable options;
 ### set options using $BOOL_TRUE, $BOOL_FALSE, 'stringvalues' or integer
 d_target='/dr/servers'                  ## the base server backup directory
-fin_dir="running-config_duplicity"      ## the final backup directory
 B_MAIL=$BOOL_TRUE                       ## should this program use email subsystem
 
 ########################################################################
@@ -78,7 +77,7 @@ exit $EXIT_ERR_USAGE
 }
     
 function do_return_target(){
-    local var=`echo $1 | sed 's~/dr/servers/~~' | sed 's~/running-config_duplicity~~'`
+    local var=`echo $1 | sed "s~$d_target/~~"`
     echo "$var"
 }
 
@@ -130,7 +129,7 @@ case $key in
         if [ -z "$2" ]; then
             usage
         else
-            F_TARGET_STR=$2; 
+            F_TARGET_VAL=$2; 
         fi
     shift 2
     ;;
@@ -162,7 +161,7 @@ cd $d_target;
 ## iterate over each server directory
 for d in */; do
 	## build the running-config folder
-	tar_dir="$d_target""/""$d""$fin_dir"
+	tar_dir="$d_target""/""$d"
 	## append target into the array
 	arr[$eoa]=$tar_dir
 	let "eoa++"
@@ -175,7 +174,7 @@ fi
 if [ "$F_TARGET" ]; then
     for i in "${arr[@]}"; do
         var=$(do_return_target $i)
-        if [ "$var" == "$F_TARGET_STR" ]; then
+        if [ "$var" == "$F_TARGET_VAL" ]; then
             do_print_chain $i
         fi
     done
