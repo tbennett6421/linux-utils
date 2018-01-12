@@ -24,7 +24,6 @@ HOST=`$HOSTNAME`
 ### Begin configurable options;
 ### set options using $BOOL_TRUE, $BOOL_FALSE, 'stringvalues' or integer
 ################################################################################
-GPG_PASSWORD='setme'                                                        ##!!
 SSH_PR_KEY="/home/dr/.ssh/id_rsa"     ## SSH key for remote login           ##!!
 REM_USER="dr"                         ## Username for remote system         ##!!
 REM_HOST="dr"                         ## Target remote system               ##!!
@@ -86,8 +85,6 @@ LOCAL_BKUP=(
 '/root/'
 )
 
-
-
 ########################################################################
 ### Begin Constants and Definitions
 ########################################################################
@@ -127,8 +124,8 @@ TIMESTAMP=`$DATE +%Y.%m.%d`
 LOG_FILE="$LOG_DIR/$TIMESTAMP-$SCRIPT_NAME.log"
 
 if [ $B_MAIL -eq $BOOL_TRUE ]; then
-	FROM="setme"   ##!!
-	TO="setme"     ##!!
+    FROM="tbennett6421@gmail.com"
+    TO="tbennett6421@gmail.com"
 	SUBJ="$HOST: $SCRIPT_NAME: error"
 	MAILER=`which pygmail`
 fi
@@ -148,6 +145,8 @@ function usage(){
     -i|--incremental     sets backup mode to incremental
     -d|--debug           enable debugging output
     -h|--help            prints this help menu.
+    --hasrole-lamp       sets hook to backup webserver stack
+    --hasrole-zfs        sets hook to backup zfs pools
     -g|--gpg <file>      specifies a file containing the passphrase to set
 EOF
 exit $EXIT_ERR_USAGE
@@ -192,7 +191,7 @@ case $key in
     F_FULL="true"
     shift
     ;;
-    -i|--incremental)
+    -i|--inc|--incremental)
     F_INCREMENTAL="true"
     shift
     ;;
@@ -202,6 +201,14 @@ case $key in
     ;;
     -h|--help)
     F_HELP="true"
+    shift
+    ;;
+    --hasrole-lamp)
+    HASROLE_LAMP=$BOOL_TRUE
+    shift
+    ;;
+    --hasrole-zfs)
+    HASROLE_ZFS=$BOOL_TRUE
     shift
     ;;
     -g|--gpg)
