@@ -302,7 +302,7 @@ if [ $HASROLE_LAMP -eq $BOOL_TRUE ]; then
 	## Ensure that root can login to mysql without requiring a password
 	## @link https://serverfault.com/questions/563714
 	MYSQLDUMP=`which mysqldump`
-	`$MYSQLDUMP --all-databases > /root/mysql_backup/alldb.sql`
+	`$MYSQLDUMP --defaults-extra-file=/root/.my.cnf --all-databases > /root/mysql_backup/alldb.sql`
 
 	LOCAL_BKUP+=('/etc/php/')
 	LOCAL_BKUP+=('/etc/mysql/')
