@@ -407,49 +407,50 @@ fi
 if [ $TTY_SETTING -eq $RTC_TTY_IS_TERMINAL ]; then
 	info "Running from interactive terminal"
 	if [ "$F_DEBUG" ]; then
-		debug "exec \\ $NOHUP $TIME $DUPLICITY $REM_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE"
-		debug "exec \\ $NOHUP $TIME $DUPLICITY $REM_CLEANUP_STR 2>&1 | $TEE $LOG_FILE"
-		debug "exec \\ $NOHUP $TIME $DUPLICITY $CLOUD_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE"
-		debug "exec \\ $NOHUP $TIME $DUPLICITY $CLOUD_CLEANUP_STR 2>&1 | $TEE $LOG_FILE"
+		debug "exec \\ $NOHUP $TIME $DUPLICITY $REM_DUPL_BKUP_STR 2>&1 | $TEE -a $LOG_FILE"
+		debug "exec \\ $NOHUP $TIME $DUPLICITY $REM_CLEANUP_STR 2>&1 | $TEE -a $LOG_FILE"
+		debug "exec \\ $NOHUP $TIME $DUPLICITY $CLOUD_DUPL_BKUP_STR 2>&1 | $TEE -a $LOG_FILE"
+		debug "exec \\ $NOHUP $TIME $DUPLICITY $CLOUD_CLEANUP_STR 2>&1 | $TEE -a $LOG_FILE"
 	fi
 	
-	eval $NOHUP $TIME $DUPLICITY $REM_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE
-	eval $NOHUP $TIME $DUPLICITY $REM_CLEANUP_STR 2>&1 | $TEE $LOG_FILE
+	eval $NOHUP $TIME $DUPLICITY $REM_DUPL_BKUP_STR 2>&1 | $TEE -a $LOG_FILE
+	eval $NOHUP $TIME $DUPLICITY $REM_CLEANUP_STR 2>&1 | $TEE -a $LOG_FILE
 	export PASSPHRASE=$GPG_PASSPHRASE
-	eval $NOHUP $TIME $DUPLICITY $CLOUD_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE
-	eval $NOHUP $TIME $DUPLICITY $CLOUD_CLEANUP_STR 2>&1 | $TEE $LOG_FILE
+	eval $NOHUP $TIME $DUPLICITY $CLOUD_DUPL_BKUP_STR 2>&1 | $TEE -a $LOG_FILE
+	eval $NOHUP $TIME $DUPLICITY $CLOUD_CLEANUP_STR 2>&1 | $TEE -a $LOG_FILE
 	unset PASSPHRASE
 else
 	info "Running from non-interactive terminal"
 	if [ "$F_DEBUG" ]; then
-		debug "exec \\ $TIME $DUPLICITY $REM_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE"
-		debug "exec \\ $TIME $DUPLICITY $REM_CLEANUP_STR 2>&1 | $TEE $LOG_FILE"
-		debug "exec \\ $TIME $DUPLICITY $CLOUD_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE"
-		debug "exec \\ $TIME $DUPLICITY $CLOUD_CLEANUP_STR 2>&1 | $TEE $LOG_FILE"
+		debug "exec \\ $TIME $DUPLICITY $REM_DUPL_BKUP_STR 2>&1 | $TEE -a $LOG_FILE"
+		debug "exec \\ $TIME $DUPLICITY $REM_CLEANUP_STR 2>&1 | $TEE -a $LOG_FILE"
+		debug "exec \\ $TIME $DUPLICITY $CLOUD_DUPL_BKUP_STR 2>&1 | $TEE -a $LOG_FILE"
+		debug "exec \\ $TIME $DUPLICITY $CLOUD_CLEANUP_STR 2>&1 | $TEE -a $LOG_FILE"
 	fi
 	
-	eval $TIME $DUPLICITY $REM_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE
-	eval $TIME $DUPLICITY $REM_CLEANUP_STR 2>&1 | $TEE $LOG_FILE
+	eval $TIME $DUPLICITY $REM_DUPL_BKUP_STR 2>&1 | $TEE -a $LOG_FILE
+	eval $TIME $DUPLICITY $REM_CLEANUP_STR 2>&1 | $TEE -a $LOG_FILE
 	export PASSPHRASE=$GPG_PASSPHRASE
-	eval $TIME $DUPLICITY $CLOUD_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE
-	eval $TIME $DUPLICITY $CLOUD_CLEANUP_STR 2>&1 | $TEE $LOG_FILE
+	eval $TIME $DUPLICITY $CLOUD_DUPL_BKUP_STR 2>&1 | $TEE -a $LOG_FILE
+	eval $TIME $DUPLICITY $CLOUD_CLEANUP_STR 2>&1 | $TEE -a $LOG_FILE
 	unset PASSPHRASE
 fi
 
-RET=`grep "Errors" $LOG_FILE`
-# check if error
-if [ "$RET" != "Errors 0" ]; then
-	msg="There was an unknown error"
+#@ TODO fix at later date
+#@RET=`grep "Errors" $LOG_FILE`
+#@# check if error
+#@if [ "$RET" != "Errors 0" ]; then
+#@	msg="There was an unknown error"
 
-	printf "$msg\n";                ## output error msg
-	logger "$SCRIPT_NAME: $msg"     ## send to syslog
+#@	printf "$msg\n";                ## output error msg
+#@	logger "$SCRIPT_NAME: $msg"     ## send to syslog
 
-	mbody=$(ml_output "$msg")       ## compose email
-	if [ "$F_MAIL" ]; then
-		$MAILER -f "$FROM" -t "$TO" -s "$SUBJ" -b "$mbody"
-	fi
-
-	exit $EXIT_ERR_GREP;
-else
-	exit $EXIT_ERR_SUCCESS;
-fi
+#@	mbody=$(ml_output "$msg")       ## compose email
+#@	if [ "$F_MAIL" ]; then
+#@		$MAILER -f "$FROM" -t "$TO" -s "$SUBJ" -b "$mbody"
+#@	fi
+#@
+#@	exit $EXIT_ERR_GREP;
+#@else
+#@	exit $EXIT_ERR_SUCCESS;
+#@fi
