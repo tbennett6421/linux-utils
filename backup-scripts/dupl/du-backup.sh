@@ -345,7 +345,7 @@ CLOUD_DUPL_BKUP_STR+="${DUPL_BKUP[*]}"        ## print entire array on one-line
 CLOUD_DUPL_BKUP_STR+=" --exclude '**' / "     ## space, exclude option
 CLOUD_DUPL_BKUP_STR+="$CLOUD_URI"
 
-REM_CLEANUP_STR="remove-older-than 2W $REMOTE_URI --force"
+REM_CLEANUP_STR="remove-older-than 2W $REMOTE_URI --force --ssh-options='-oIdentityFile=$SSH_PR_KEY'"
 CLOUD_CLEANUP_STR="remove-older-than 2W $CLOUD_URI --force"
 
 info "Loaded LOCAL_BKUP"
