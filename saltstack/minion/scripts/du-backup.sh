@@ -303,7 +303,7 @@ if [ $HASROLE_LAMP -eq $BOOL_TRUE ]; then
 	## @link https://serverfault.com/questions/563714
 	MYSQLDUMP=`which mysqldump`
 	`$MYSQLDUMP --defaults-extra-file=/root/.my.cnf --all-databases > /root/mysql_backup/alldb.sql`
-
+	
 	LOCAL_BKUP+=('/etc/php/')
 	LOCAL_BKUP+=('/etc/mysql/')
 	LOCAL_BKUP+=('/etc/ssl/')
@@ -344,6 +344,9 @@ CLOUD_DUPL_BKUP_STR="$F_MODE -v4 "
 CLOUD_DUPL_BKUP_STR+="${DUPL_BKUP[*]}"        ## print entire array on one-line
 CLOUD_DUPL_BKUP_STR+=" --exclude '**' / "     ## space, exclude option
 CLOUD_DUPL_BKUP_STR+="$CLOUD_URI"
+
+REM_CLEANUP_STR="remove-older-than 2W $REMOTE_URI --force"
+CLOUD_CLEANUP_STR="remove-older-than 2W $CLOUD_URI --force"
 
 info "Loaded LOCAL_BKUP"
 if [ "$F_DEBUG" ]; then
@@ -405,23 +408,31 @@ if [ $TTY_SETTING -eq $RTC_TTY_IS_TERMINAL ]; then
 	info "Running from interactive terminal"
 	if [ "$F_DEBUG" ]; then
 		debug "exec \\ $NOHUP $TIME $DUPLICITY $REM_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE"
+		debug "exec \\ $NOHUP $TIME $DUPLICITY $REM_CLEANUP_STR 2>&1 | $TEE $LOG_FILE"
 		debug "exec \\ $NOHUP $TIME $DUPLICITY $CLOUD_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE"
+		debug "exec \\ $NOHUP $TIME $DUPLICITY $CLOUD_CLEANUP_STR 2>&1 | $TEE $LOG_FILE"
 	fi
 	
 	eval $NOHUP $TIME $DUPLICITY $REM_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE
+	eval $NOHUP $TIME $DUPLICITY $REM_CLEANUP_STR 2>&1 | $TEE $LOG_FILE
 	export PASSPHRASE=$GPG_PASSPHRASE
 	eval $NOHUP $TIME $DUPLICITY $CLOUD_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE
+	eval $NOHUP $TIME $DUPLICITY $CLOUD_CLEANUP_STR 2>&1 | $TEE $LOG_FILE
 	unset PASSPHRASE
 else
 	info "Running from non-interactive terminal"
 	if [ "$F_DEBUG" ]; then
 		debug "exec \\ $TIME $DUPLICITY $REM_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE"
+		debug "exec \\ $TIME $DUPLICITY $REM_CLEANUP_STR 2>&1 | $TEE $LOG_FILE"
 		debug "exec \\ $TIME $DUPLICITY $CLOUD_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE"
+		debug "exec \\ $TIME $DUPLICITY $CLOUD_CLEANUP_STR 2>&1 | $TEE $LOG_FILE"
 	fi
 	
 	eval $TIME $DUPLICITY $REM_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE
+	eval $TIME $DUPLICITY $REM_CLEANUP_STR 2>&1 | $TEE $LOG_FILE
 	export PASSPHRASE=$GPG_PASSPHRASE
 	eval $TIME $DUPLICITY $CLOUD_DUPL_BKUP_STR 2>&1 | $TEE $LOG_FILE
+	eval $TIME $DUPLICITY $CLOUD_CLEANUP_STR 2>&1 | $TEE $LOG_FILE
 	unset PASSPHRASE
 fi
 
