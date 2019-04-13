@@ -1,0 +1,31 @@
+At 15:30:08 UTC on Sun, 4 December 292,277,026,596 64-bit versions of the Unix time stamp will cease to work, as it will overflow the largest value that can be held in a signed 64-bit number. This is considerably longer than the time it will take the Sun to expand to a red giant and swallow the earth.
+%
+‎' . . . [virus writers] have a chronic lack of girlfriends, are usually socially inadequate and are drawn compulsively to write self-replicating codes.'
+
+--Jan Hruska, Sophos
+%
+"You can't trust code that you did not totally create yourself. (Especially code from companies that employ people like me.)"
+
+-- Ken Thompson, now at Google
+%
+Just to illustrate how low risks of collision are with SHA-256: consider your risks of being mauled by a gorilla escaped from a local zoo or private owner. Unlikely? Yes, but it still may conceivably happen: it seems that a gorilla escaped from the Dallas zoo in 2004 and injured four persons; another gorilla escaped from the same zoo in 2010. Assuming that there is only one rampaging gorilla every 6 years on the whole Earth (not only in the Dallas area) and you happen to be the unlucky chap who is on his path, out of a human population of 6.5 billions, then risks of grievous-bodily-harm-by-gorilla can be estimated at about 1 in 243.7 per day. Now, take 10 thousands of PC and have them work on finding a collision for SHA-256. The chances of hitting a collision are close to 1 in 275 per day -- more than a billion less probable than the angry ape thing. The conclusion is that if you fear SHA-256 collisions but do not keep with you a loaded shotgun at all times, then you are getting your priorities wrong. Also, do not mess with Texas.
+
+-- (Thomas Pornin) https://stackoverflow.com/questions/4676828/
+%
+the theoretical maximum speed of a carefully-designed worm from initial release until saturation is startling: 510 milliseconds to 1.3 seconds.
+
+In less than two seconds, it's over. No defense that relies on any form of human intervention will be fast enough to cope with threats like this.
+
+--Computer Viruses and Malware (2006)
+%
+>> I mostly like how well my reverse proxy works with emby allowing me to apply my SSL certificate and get rid of those damn chrom warnings. Oh and you know, there is no phone home in emby. Plex sneds lists of users and your media to their servers. Hello MPAA warrant.
+
+<<    That's bullshit. The cloud portion of Plex.tv acts as a "directory" for sharing, but it doesn't know what media you have, or stream, or share. 
+
+<<    And SSL is now supported in Plex ~ https://blog.plex.tv/2015/06/04/its-not-easy-being-green-secure-communication-arrives/
+
+>>        Have you done a Wireshark analysis? Have you read the source code? Go back to your corner script kiddie, any ignormamus can read a blog.
+        
+<<            I wrote the source code, asshat.
+
+-- https://www.reddit.com/r/PleX/
