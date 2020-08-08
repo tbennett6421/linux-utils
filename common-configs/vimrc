@@ -372,6 +372,10 @@ if &diff
     " hi DiffText   ctermfg=233  ctermbg=yellow  guifg=#000033 guibg=#DDDDFF gui=none cterm=none
 endif
 
+" Fix stupid mouse issues with dumb terminals
+set mouse=
+set ttymouse=
+
 " Syntax highlighting per extension
 autocmd BufNewFile,BufRead *.sls set syntax=yaml
 
