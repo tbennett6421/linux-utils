@@ -376,6 +376,10 @@ endif
 set mouse=
 set ttymouse=
 
+" Fix WSL utf8 issues
+" https://superuser.com/questions/1284561/why-is-vim-starting-in-replace-mode
+set t_u7=
+
 " Syntax highlighting per extension
 autocmd BufNewFile,BufRead *.sls set syntax=yaml
 
