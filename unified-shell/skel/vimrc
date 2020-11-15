@@ -128,10 +128,10 @@ set t_vb=
 set tm=500
 
 " Folding Stuffs
-set foldmethod=indent
+"set foldmethod=indent
 
 " Space will toggle folds!
-nnoremap <space> za
+" nnoremap <space> za
 
 " Enable mouse support in console
 "set mouse=a
@@ -382,4 +382,3 @@ set t_u7=
 
 " Syntax highlighting per extension
 autocmd BufNewFile,BufRead *.sls set syntax=yaml
-
