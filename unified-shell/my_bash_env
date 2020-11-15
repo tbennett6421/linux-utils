@@ -1,4 +1,12 @@
 export GOPATH=$HOME/go
+export SSL_CERT_FILE="/etc/ssl/certs/availity.pem"
+export NODE_EXTRA_CA_CERTS="/etc/ssl/certs/availity.pem"
+export REQUESTS_CA_BUNDLE="/etc/ssl/certs/availity.pem"
+export CURL_CA_BUNDLE="/etc/ssl/certs/availity.pem"
+
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+    . $(brew --prefix)/etc/bash_completion
+fi
 
 SSH_ENV="$HOME/.ssh/environment"
 
