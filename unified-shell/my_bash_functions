@@ -1,0 +1,129 @@
+proxy="http://proxy-corp.availity.net:8080"
+noProxy="localhost,127.0.0.1,localaddress,.local,.availity.net,qua-ams.availity.com,.availity.com,0,1,2,3,4,5,6,7,8,9"
+
+function proxy() {
+        echo ''
+        echo 'Proxy (artifactory)'
+
+        # git
+        git config --global http.proxy ${proxy}
+        git config --global https.proxy ${proxy}
+
+        # npm
+        npm config delete http-proxy
+        npm config delete https-proxy
+        npm config delete proxy
+        npm config set registry 'https://artifactory.availity.com/artifactory/api/npm/npm/'
+
+        export http_proxy=${proxy}
+        export https_proxy=${proxy}
+        export no_proxy=${noProxy}
+        export ALL_PROXY=${proxy}
+        export all_proxy=${proxy}
+}
+
+function proxi() {
+
+        echo ''
+        echo 'Proxy (bluecoat)'
+
+        git config --global http.proxy ${proxy}
+        git config --global https.proxy ${proxy}
+
+        npm config set proxy ${proxy}
+        npm config set http-proxy ${proxy}
+        npm config set https-proxy ${proxy}
+
+        # will not work if cafile set, error: UNABLE_TO_GET_ISSUER_CERT_LOCALLY
+        npm config delete cafile
+        npm config delete registry
+
+        export http_proxy=${proxy}
+        export https_proxy=${proxy}
+        export no_proxy=${noProxy}
+
+        export ALL_PROXY=${proxy}
+        export all_proxy=${proxy}
+}
+
+function unproxy() {
+
+        echo ''
+        echo 'Proxy Off'
+
+        git config --global --unset http.proxy
+        git config --global --unset https.proxy
+
+        npm config delete http-proxy
+        npm config delete https-proxy
+        npm config delete proxy
+
+        npm config delete cafile
+        npm config set strict-ssl true
+        npm config set registry 'https://registry.npmjs.org/'
+
+        unset http_proxy
+    unset HTTP_PROXY
+    unset https_proxy
+    unset HTTPS_PROXY
+    unset no_proxy
+    unset ALL_PROXY
+    unset all_proxy
+
+}
+
+
+
+
+function md() {
+        mkdir -p "$@" && cd "$@"
+}
+
+# find shorthand
+function f() {
+        find . -name "$1" 2>&1 | grep -v 'Permission denied'
+}
+
+# List path components, one per line
+function path() { echo -e ${PATH//:/\\n}; }
+
+# Convert hex to decimal
+function h2d() { printf '%d\n' 0x"$1"; }
+
+# Convert decimal to hex
+function d2h() { printf '%x\n' "$1"; }
+
+# Print out a color table
+function colours() {
+  for i in {0..255}; do
+    if ((i < 10)); then
+      prefix="    "
+    elif ((i < 100)); then
+      prefix="   "
+    else
+      prefix="  "
+    fi
+    printf "\x1b[48;5;${i}m\x1b[38;5;$[255-i]m${prefix}${i} "
+    if (((i+1)%16 == 0)); then
+      printf "\n"
+    fi
+  done
+  printf "\x1b[0m\n"
+}
+
+# Test to see whether your terminal supports truecolor
+function truecolor() {
+  awk 'BEGIN{
+    s="          "; s=s s s s s s s s;
+    for (colnum = 0; colnum<77; colnum++) {
+      r = 255-(colnum*255/76);
+      g = (colnum*510/76);
+      b = (colnum*255/76);
+      if (g>255) g = 510-g;
+      printf "\033[48;2;%d;%d;%dm", r,g,b;
+      printf "\033[38;2;%d;%d;%dm", 255-r,255-g,255-b;
+      printf "%s\033[0m", substr(s,colnum+1,1);
+    }
+    printf "\n";
+  }'
+}
