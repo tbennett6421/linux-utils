@@ -1,4 +1,8 @@
 ```bash
+
+git clone https://github.com/tbennett6421/linux-utils
+cd linux-utils/unified-shell
+
 # Backup files before clobbering
 cp --backup=existing ~/.bashrc ~/.bashrc.backup > /dev/null 2>&1
 cp --backup=existing ~/.bash_profile ~/.bash_aliases.backup > /dev/null 2>&1
