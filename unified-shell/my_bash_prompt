@@ -1,0 +1,31 @@
+## Move to home if opened from the default location
+CWD=`pwd`
+DWD='/mnt/c/Windows/System32'
+
+if [ "$CWD" = "$DWD" ]
+then
+    cd ~/
+fi
+
+## Setup terminal
+PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \[$(tput setaf 5)\]\W\[$(tput setaf 1)\]]\[$(tput setaf 7)\]\\$ \[$(tput sgr0)\]"
+
+## Print MOTD
+command -v fortune > /dev/null 2>&1
+fortune_exists=$?
+if [ $fortune_exists  ] ; then
+    command -v cowsay > /dev/null 2>&1
+    cowsay_exists=$?
+    if [ $cowsay_exists  ] ; then
+        command -v lolcat > /dev/null 2>&1
+        lolcat_exists=$?
+        if [ $lolcat_exists  ] ; then
+            fortune -a -c -s -n 100 | cowsay -f $(ls /usr/share/cowsay/cows/ | shuf -n1) | lolcat
+        else
+            fortune -a -c -s -n 100 | cowsay -f $(ls /usr/share/cowsay/cows/ | shuf -n1)
+        fi
+    else
+        fortune -a -c -s -n 100
+    fi
+fi
+

@@ -1,1 +1,12 @@
 source ~/.bashrc
+
+# If OSX
+if [ "$(uname)" == "Darwin" ]; then
+    # Check if starship is available
+    exists=0
+    D2U=`command -v starship >/dev/null 2>&1`
+    ret=$?
+
+    if [ $ret -eq $exists ]; then
+        eval "$(starship init bash)"
+    fi
