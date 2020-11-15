@@ -1,5 +1,5 @@
+An install script that tries to do so safely
 ```bash
-
 git clone https://github.com/tbennett6421/linux-utils
 cd linux-utils/unified-shell
 git pull
@@ -41,6 +41,14 @@ find "$SRC" -type f -print0 | xargs -0 dos2unix
 \cp -f $SRC/home/vimrc ~/.vimrc
 # System stuff
 sudo rsync -avhP $SRC/usr/share/cowsay/ /usr/share/cowsay/ --delete
-sudo rsync -avhP $SRC/usr/share/games/fortunes/ /usr/share/games/fortunes/ --delete
+sudo rsync -avhP $SRC/usr/share/games/fortunes/ /usr/share/games/fortunes/
+```
 
+If you feel your shell is stable, and you'd like to do some cleanup you can do the following
+```bash
+find ~/ -name ".*.backup*"
+find ~/ -name ".*.backup*" -delete
+rm -rf ~/.vim.backup
+sudo rm -rf ~/fortune
+sudo rm -rf ~/cowsay
 ```
