@@ -10,3 +10,4 @@ if [ "$(uname)" == "Darwin" ]; then
     if [ $ret -eq $exists ]; then
         eval "$(starship init bash)"
     fi
+fi
