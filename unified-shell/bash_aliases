@@ -1,0 +1,42 @@
+## Move to home if opened from the default location
+CWD=`pwd`
+DWD='/mnt/c/Windows/System32'
+
+if [ "$CWD" = "$DWD" ]
+then
+	cd ~/
+fi
+
+export PATH="$PATH:/opt/node/bin"
+
+## Load other files
+if [ -f ~/.bash_profile_aliases ]; then
+	. ~/.bash_profile_aliases
+fi
+
+PROXY_REQUIRED=1
+if [[ PROXY_REQUIRED -eq 1 ]]; then
+    export http_proxy="http://proxy-corp.availity.net:8080/"
+    export https_proxy="http://proxy-corp.availity.net:8080/"
+    export ftp_proxy="http://proxy-corp.availity.net:8080/"
+    export no_proxy="availity.net, *.availity.net, *.*.availity.net, availity.com, *.availity.com,  *.*.availity.com, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, localhost, localhost.localdomin, 127.0.0.1"
+    export HTTP_PROXY="http://proxy-corp.availity.net:8080/"
+    export HTTPS_PROXY="http://proxy-corp.availity.net:8080/"
+    export FTP_PROXY="http://proxy-corp.availity.net:8080/"
+    export NO_PROXY="availity.net, *.availity.net, *.*.availity.net, availity.com, *.availity.com,  *.*.availity.com, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, localhost, localhost.localdomin, 127.0.0.1"
+fi
+
+## Setup terminal
+PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \[$(tput setaf 5)\]\W\[$(tput setaf 1)\]]\[$(tput setaf 7)\]\\$ \[$(tput sgr0)\]"
+
+## Print MOTD
+#fortune -a -c -s -n 100 | cowsay -f $(ls /usr/share/cowsay/cows/ | shuf -n1) | lolcat
+
+command -v fortune > /dev/null 2>&1
+exists=$?
+if [ $exists  ] ; then
+    fortune -a -c -s -n 100 | cowsay -f $(ls /usr/share/cowsay/cows/ | shuf -n1) | lolcat
+else
+    echo "Does not exist" | lolcat
+fi
+
