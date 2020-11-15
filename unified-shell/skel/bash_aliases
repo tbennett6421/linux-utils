@@ -1,14 +1,14 @@
 ## Default loading point for bash customizations
 
 ## Load other files
-if [ -f ~/.my_bash_env ]; then
-    source ~/.my_bash_env
-fi
 if [ -f ~/.my_bash_aliases ]; then
     source ~/.my_bash_aliases
 fi
 if [ -f ~/.my_bash_functions ]; then
     source ~/.my_bash_functions
+fi
+if [ -f ~/.my_bash_env ]; then
+    source ~/.my_bash_env
 fi
 if [ -f ~/.my_bash_prompt ]; then
     source ~/.my_bash_prompt

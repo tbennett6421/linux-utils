@@ -2,6 +2,10 @@
 
 git clone https://github.com/tbennett6421/linux-utils
 cd linux-utils/unified-shell
+git pull
+
+# install MOTD stuff
+sudo apt-get install lolcat cowsay fortune fortunes-off dos2unix -y
 
 # Backup files before clobbering
 cp --backup=existing ~/.bashrc ~/.bashrc.backup > /dev/null 2>&1
@@ -17,6 +21,8 @@ cp -R --backup=existing ~/.vim ~/.vim.backup > /dev/null 2>&1
 
 # copy new files over old ones
 SRC="skel"
+find "$SRC" -type f -print0 | xargs -0 dos2unix
+
 cp -f $SRC/bashrc ~/.bashrc
 cp -f $SRC/bash_profile ~/.bash_profile
 cp -f $SRC/bash_aliases ~/.bash_aliases
@@ -28,6 +34,4 @@ cp -f $SRC/tmux.conf ~/.tmux.conf
 cp -f $SRC/vimrc ~/.vimrc
 rsync -avhP $SRC/vim ~/.vim --delete
 
-# install MOTD stuff
-sudo apt-get install lolcat cowsay fortune fortunes-off -y
 ```

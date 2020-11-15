@@ -8,12 +8,11 @@ else
 fi
 
 # bash_completion if brew is installed
-command -v brew > /dev/null 2>&1
-brew_exists=$?
-if [ $brew_exists  ] ; then
+if [ "$(command -v brew)" ] ; then
     if [ -f $(brew --prefix)/etc/bash_completion ]; then
         source $(brew --prefix)/etc/bash_completion
     fi
+fi
 
 # Configure SSH agent
 SSH_ENV="$HOME/.ssh/environment"
