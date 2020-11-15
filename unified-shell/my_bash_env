@@ -1,13 +1,21 @@
 export GOPATH=$HOME/go
-export SSL_CERT_FILE="/etc/ssl/certs/availity.pem"
-export NODE_EXTRA_CA_CERTS="/etc/ssl/certs/availity.pem"
-export REQUESTS_CA_BUNDLE="/etc/ssl/certs/availity.pem"
-export CURL_CA_BUNDLE="/etc/ssl/certs/availity.pem"
 
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-    . $(brew --prefix)/etc/bash_completion
+PROXY_REQUIRED=1
+if [[ PROXY_REQUIRED -eq 1 ]]; then
+    proxy
+else 
+    unproxy
 fi
 
+# bash_completion if brew is installed
+command -v brew > /dev/null 2>&1
+brew_exists=$?
+if [ $brew_exists  ] ; then
+    if [ -f $(brew --prefix)/etc/bash_completion ]; then
+        source $(brew --prefix)/etc/bash_completion
+    fi
+
+# Configure SSH agent
 SSH_ENV="$HOME/.ssh/environment"
 
 function start_agent {

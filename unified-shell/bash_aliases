@@ -13,13 +13,3 @@ fi
 if [ -f ~/.my_bash_prompt ]; then
     source ~/.my_bash_prompt
 fi
-
-export PATH="$PATH:/opt/node/bin"
-
-PROXY_REQUIRED=1
-if [[ PROXY_REQUIRED -eq 1 ]]; then
-    proxy
-else 
-    unproxy
-fi
-
