@@ -23,15 +23,15 @@ cp -R --backup=existing ~/.vim ~/.vim.backup > /dev/null 2>&1
 SRC="skel"
 find "$SRC" -type f -print0 | xargs -0 dos2unix
 
-cp -f $SRC/bashrc ~/.bashrc
-cp -f $SRC/bash_profile ~/.bash_profile
-cp -f $SRC/bash_aliases ~/.bash_aliases
-cp -f $SRC/my_bash_aliases ~/.my_bash_aliases
-cp -f $SRC/my_bash_env ~/.my_bash_env
-cp -f $SRC/my_bash_functions ~/.my_bash_functions
-cp -f $SRC/my_bash_prompt ~/.my_bash_prompt
-cp -f $SRC/tmux.conf ~/.tmux.conf
-cp -f $SRC/vimrc ~/.vimrc
-rsync -avhP $SRC/vim ~/.vim --delete
+cp -f $SRC/home/bashrc ~/.bashrc
+cp -f $SRC/home/bash_profile ~/.bash_profile
+cp -f $SRC/home/bash_aliases ~/.bash_aliases
+cp -f $SRC/home/my_bash_aliases ~/.my_bash_aliases
+cp -f $SRC/home/my_bash_env ~/.my_bash_env
+cp -f $SRC/home/my_bash_functions ~/.my_bash_functions
+cp -f $SRC/home/my_bash_prompt ~/.my_bash_prompt
+cp -f $SRC/home/tmux.conf ~/.tmux.conf
+cp -f $SRC/home/vimrc ~/.vimrc
+rsync -avhP $SRC/home/vim ~/.vim --delete
 
 ```
