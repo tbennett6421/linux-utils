@@ -1,79 +1,47 @@
 proxy="http://proxy-corp.availity.net:8080"
-noProxy="localhost,127.0.0.1,localaddress,.local,.availity.net,qua-ams.availity.com,.availity.com,0,1,2,3,4,5,6,7,8,9"
+noProxy="availity.net, *.availity.net, *.*.availity.net, availity.com, *.availity.com,  *.*.availity.com, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, localhost, localhost.localdomin, 127.0.0.1"
 
 function proxy() {
         echo ''
-        echo 'Proxy (artifactory)'
-
-        # git
-        git config --global http.proxy ${proxy}
-        git config --global https.proxy ${proxy}
-
-        # npm
-        npm config delete http-proxy
-        npm config delete https-proxy
-        npm config delete proxy
-        npm config set registry 'https://artifactory.availity.com/artifactory/api/npm/npm/'
-
-        export http_proxy=${proxy}
-        export https_proxy=${proxy}
-        export no_proxy=${noProxy}
-        export ALL_PROXY=${proxy}
-        export all_proxy=${proxy}
-}
-
-function proxi() {
-
-        echo ''
-        echo 'Proxy (bluecoat)'
+        echo 'Setting Proxy config'
 
         git config --global http.proxy ${proxy}
         git config --global https.proxy ${proxy}
 
-        npm config set proxy ${proxy}
-        npm config set http-proxy ${proxy}
-        npm config set https-proxy ${proxy}
-
-        # will not work if cafile set, error: UNABLE_TO_GET_ISSUER_CERT_LOCALLY
-        npm config delete cafile
-        npm config delete registry
-
         export http_proxy=${proxy}
         export https_proxy=${proxy}
-        export no_proxy=${noProxy}
+        export HTTP_PROXY=${proxy}
+        export HTTPS_PROXY=${proxy}
 
-        export ALL_PROXY=${proxy}
+        export no_proxy=${noProxy}
+        export NO_PROXY=${noProxy}
+
         export all_proxy=${proxy}
+        export ALL_PROXY=${proxy}
+        
+        export ftp_proxy=${proxy}
+        export FTP_PROXY=${proxy}
 }
 
 function unproxy() {
 
         echo ''
-        echo 'Proxy Off'
+        echo 'Removing Proxy config'
 
         git config --global --unset http.proxy
         git config --global --unset https.proxy
 
-        npm config delete http-proxy
-        npm config delete https-proxy
-        npm config delete proxy
-
-        npm config delete cafile
-        npm config set strict-ssl true
-        npm config set registry 'https://registry.npmjs.org/'
-
         unset http_proxy
-    unset HTTP_PROXY
-    unset https_proxy
-    unset HTTPS_PROXY
-    unset no_proxy
-    unset ALL_PROXY
-    unset all_proxy
-
+        unset https_proxy
+        unset HTTP_PROXY
+        unset HTTPS_PROXY
+        unset no_proxy
+        unset NO_PROXY
+        unset all_proxy
+        unset ALL_PROXY
+        unset ftp_proxy
+        unset FTP_PROXY
 }
-
-
-
 
 function md() {
         mkdir -p "$@" && cd "$@"
