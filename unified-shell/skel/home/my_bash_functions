@@ -23,9 +23,11 @@ function proxy() {
         export FTP_PROXY=${proxy}
 
         ## If we proxied, ensure we use a ssl chain for interception
-        export SSL_CERT_FILE="/etc/ssl/certs/availity.pem"
-        export REQUESTS_CA_BUNDLE="/etc/ssl/certs/availity.pem"
+        export AWS_CA_BUNDLE="/etc/ssl/certs/availity.pem"
         export CURL_CA_BUNDLE="/etc/ssl/certs/availity.pem"
+        export REQUESTS_CA_BUNDLE="/etc/ssl/certs/availity.pem"
+        export SSL_CERT_FILE="/etc/ssl/certs/availity.pem"
+
 }
 
 function unproxy() {
@@ -47,9 +49,10 @@ function unproxy() {
         unset ftp_proxy
         unset FTP_PROXY
 
-        unset SSL_CERT_FILE
-        unset REQUESTS_CA_BUNDLE
+        unset AWS_CA_BUNDLE
         unset CURL_CA_BUNDLE
+        unset REQUESTS_CA_BUNDLE
+        unset SSL_CERT_FILE
 }
 
 function md() {

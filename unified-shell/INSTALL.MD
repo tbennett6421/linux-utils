@@ -4,6 +4,9 @@ git clone https://github.com/tbennett6421/linux-utils
 cd linux-utils/unified-shell
 git pull
 
+# Ensure sudoers timestamp is updated to avoid prompt
+sudo -v
+
 # install MOTD stuff
 sudo apt-get install lolcat cowsay fortune fortunes-off dos2unix -y
 
@@ -18,6 +21,9 @@ cp --backup=existing ~/.my_bash_prompt ~/.my_bash_prompt.backup > /dev/null 2>&1
 cp --backup=existing ~/.tmux.conf ~/.tmux.conf.backup > /dev/null 2>&1
 cp --backup=existing ~/.vimrc ~/.vimrc.backup > /dev/null 2>&1
 cp -R --backup=existing ~/.vim ~/.vim.backup > /dev/null 2>&1
+# System stuff
+sudo cp -R --backup=existing /usr/share/cowsay ~/cowsay > /dev/null 2>&1
+sudo cp -R --backup=existing /usr/share/games/fortunes ~/fortunes > /dev/null 2>&1
 
 # copy new files over old ones
 SRC="skel"
@@ -32,6 +38,8 @@ cp -f $SRC/home/my_bash_functions ~/.my_bash_functions
 cp -f $SRC/home/my_bash_prompt ~/.my_bash_prompt
 cp -f $SRC/home/tmux.conf ~/.tmux.conf
 cp -f $SRC/home/vimrc ~/.vimrc
-rsync -avhP $SRC/home/vim ~/.vim --delete
+# System stuff
+sudo rsync -avhP $SRC/usr/share/cowsay /usr/share/cowsay --delete
+sudo rsync -avhP $SRC/usr/share/games/fortunes /usr/share/games/fortunes --delete
 
 ```
