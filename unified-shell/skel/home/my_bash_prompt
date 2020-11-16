@@ -1,6 +1,6 @@
 ## Move to home if opened from the default location
 CWD=$(pwd)
-DWD='/mnt/c/Windows/System32'
+DWD='/mnt/c/WINDOWS/system32'
 
 if [ "$CWD" = "$DWD" ]
 then
