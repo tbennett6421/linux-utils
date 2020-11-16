@@ -9,11 +9,17 @@ alias curl="curl --user-agent '$USER_AGENT'"
 PULSE_ADAPTER="eth4"
 
 if [[ $(ip a show $PULSE_ADAPTER up) ]]; then
-	echo "We appear to be on vpn"
+    echo "We appear to be on vpn"
     proxy
 else
-	echo "We do not appear to be on vpn"
+    echo "We do not appear to be on vpn"
     unproxy
+fi
+
+## use git prompt
+if [ -f "$HOME/.bash-git-prompt/gitprompt.sh" ]; then
+    GIT_PROMPT_ONLY_IN_REPO=1
+    source $HOME/.bash-git-prompt/gitprompt.sh
 fi
 
 # bash_completion if brew is installed
