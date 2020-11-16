@@ -75,7 +75,7 @@ alias vpath='echo -e ${PATH//:/\\n}'
 # compile with max debugging
 alias gcc-dev="gcc -g -Wall -Wextra -Winline"
 # Get your current public IP
-alias ip="curl icanhazip.com"  
+alias whatismyip="curl icanhazip.com"
 alias ipinfo="curl ifconfig.me && curl ifconfig.me/host"
 alias ipconfig="nmcli dev list iface eth0 | grep IP4"
 # count files in directory

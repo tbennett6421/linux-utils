@@ -5,10 +5,14 @@ export WINLOCAL='/mnt/c/Users/tbennett/'
 alias cd!="cd $WINLOCAL"
 alias curl="curl --user-agent '$USER_AGENT'"
 
-PROXY_REQUIRED=0
-if [[ PROXY_REQUIRED -eq 1 ]]; then
+## Detect if on vpn
+PULSE_ADAPTER="eth4"
+
+if [[ $(ip a show $PULSE_ADAPTER up) ]]; then
+	echo "We appear to be on vpn"
     proxy
-else 
+else
+	echo "We do not appear to be on vpn"
     unproxy
 fi
 

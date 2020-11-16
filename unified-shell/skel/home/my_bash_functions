@@ -2,7 +2,7 @@ proxy="http://proxy-corp.availity.net:8080"
 noProxy="availity.net, *.availity.net, *.*.availity.net, availity.com, *.availity.com,  *.*.availity.com, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, localhost, localhost.localdomin, 127.0.0.1"
 
 function proxy() {
-        echo ''
+
         echo 'Setting Proxy config'
 
         git config --global http.proxy ${proxy}
@@ -32,7 +32,6 @@ function proxy() {
 
 function unproxy() {
 
-        echo ''
         echo 'Removing Proxy config'
 
         git config --global --unset http.proxy
