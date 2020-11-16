@@ -10,9 +10,6 @@ sudo -v
 # install MOTD stuff
 sudo apt-get install lolcat cowsay fortune fortunes-off dos2unix -y
 
-# install git prompt
-git clone https://github.com/magicmonty/bash-git-prompt.git ~/.bash-git-prompt --depth=1
-
 # Backup files before clobbering
 # https://stackoverflow.com/questions/8488253/how-to-force-cp-to-overwrite-without-confirmation
 \cp --backup=existing ~/.bashrc ~/.bashrc.backup > /dev/null 2>&1
