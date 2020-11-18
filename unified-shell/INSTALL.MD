@@ -10,6 +10,10 @@ sudo -v
 # install MOTD stuff
 sudo apt-get install lolcat cowsay fortune fortunes-off dos2unix -y
 
+# Install python stuff
+sudo apt-get install python-is-python3 python3-pip
+sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
+
 # Backup files before clobbering
 # https://stackoverflow.com/questions/8488253/how-to-force-cp-to-overwrite-without-confirmation
 \cp --backup=existing ~/.bashrc ~/.bashrc.backup > /dev/null 2>&1
@@ -52,3 +56,6 @@ rm -rf ~/.vim.backup
 sudo rm -rf ~/fortune
 sudo rm -rf ~/cowsay
 ```
+
+
+
