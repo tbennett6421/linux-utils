@@ -2,6 +2,7 @@ export TF_LOG="DEBUG"
 export USER_AGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0'
 export GOPATH=$HOME/go
 export WINLOCAL='/mnt/c/Users/tbennett/'
+PATH=$PATH:~/.local/bin
 alias cd!="cd $WINLOCAL"
 alias curl="curl --user-agent '$USER_AGENT'"
 
