@@ -24,6 +24,11 @@ if [ "$(command -v brew)" ] ; then
     fi
 fi
 
+# Configure screen
+mkdir -p ~/.screen
+chmod 700 ~/.screen
+export SCREENDIR=$HOME/.screen
+
 # Configure SSH agent
 SSH_ENV="$HOME/.ssh/environment"
 
