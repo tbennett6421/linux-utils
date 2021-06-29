@@ -2,10 +2,12 @@
 CWD=$(pwd)
 DWD='/mnt/c/WINDOWS/system32'
 
-if [ "$CWD" = "$DWD" ]
-then
-    cd ~/
-fi
+# from: https://stackoverflow.com/questions/1728683/case-insensitive-comparison-of-strings-in-shell-script
+orig_nocasematch=$(shopt -p nocasematch; true)
+shopt -s nocasematch
+# if match: cd || no-op
+[[ "$CWD" == "$DWD" ]] && cd ~/ || :
+$orig_nocasematch
 
 ## Setup terminal
 PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\[$(tput setaf 3)\]\u\[$(tput setaf 2)\]@\[$(tput setaf 4)\]\h \[$(tput setaf 5)\]\W\[$(tput setaf 1)\]]\[$(tput setaf 7)\]\\$ \[$(tput sgr0)\]"
