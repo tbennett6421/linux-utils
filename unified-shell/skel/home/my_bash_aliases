@@ -116,3 +116,8 @@ alias git-init='git config user.email tbennett6421@gmail.com && git config user.
 ### Count lines of code
 alias phplines-summary='( find ./ -name '*.php' -print0 | xargs -0 cat ) | wc -l'
 alias phplines-verbose='find . -name '*.php' | xargs wc -l'
+
+if [[ $(lsb_release -i) == *Kali* ]]
+then
+	alias nautilus='thunar'
+fi
