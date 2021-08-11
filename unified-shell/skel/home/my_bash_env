@@ -17,6 +17,10 @@ else
     unproxy
 fi
 
+if grep -q Microsoft /proc/version; then
+    export LESSCHARSET="utf-8"
+fi
+
 # bash_completion if brew is installed
 if [ "$(command -v brew)" ] ; then
     if [ -f $(brew --prefix)/etc/bash_completion ]; then
