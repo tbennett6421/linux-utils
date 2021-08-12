@@ -23,6 +23,7 @@ sudo update-alternatives --install /usr/bin/pip pip /usr/bin/pip3 1
 \cp --backup=existing ~/.my_bash_env ~/.my_bash_env.backup > /dev/null 2>&1
 \cp --backup=existing ~/.my_bash_functions ~/.my_bash_functions.backup > /dev/null 2>&1
 \cp --backup=existing ~/.my_bash_prompt ~/.my_bash_prompt.backup > /dev/null 2>&1
+\cp --backup=existing ~/.my_bash_vars ~/.my_bash_vars.backup > /dev/null 2>&1
 \cp --backup=existing ~/.tmux.conf ~/.tmux.conf.backup > /dev/null 2>&1
 \cp --backup=existing ~/.vimrc ~/.vimrc.backup > /dev/null 2>&1
 \cp -R --backup=existing ~/.vim ~/.vim.backup > /dev/null 2>&1
@@ -41,6 +42,7 @@ find "$SRC" -type f -print0 | xargs -0 dos2unix
 \cp -f $SRC/home/my_bash_env ~/.my_bash_env
 \cp -f $SRC/home/my_bash_functions ~/.my_bash_functions
 \cp -f $SRC/home/my_bash_prompt ~/.my_bash_prompt
+\cp -f $SRC/home/my_bash_vars_ ~/.my_bash_vars_
 \cp -f $SRC/home/tmux.conf ~/.tmux.conf
 \cp -f $SRC/home/vimrc ~/.vimrc
 # System stuff

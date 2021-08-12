@@ -1,0 +1,14 @@
+YzJOb1pXMWg='YUhSMGNBPT0='
+YzNSMVlnPT0='Y0hKdmVIa3RZMjl5Y0E9PQ=='
+YTJWNWQyOXlaQT09='WVhaaGFXeHBkSGs9'
+dGxk='Ym1WMA=='
+dmFy='T0RBNE1BPT0='
+Ym05d2NtOTRlUT09='WVhaaGFXeHBkSGt1Ym1WMExDQXFMbUYyWVdsc2FYUjVMbTVsZEN3Z0tpNHFMbUYyWVdsc2FYUjVMbTVsZEN3Z1lYWmhhV3hwZEhrdVkyOXRMQ0FxTG1GMllXbHNhWFI1TG1OdmJTd2dJQ291S2k1aGRtRnBiR2wwZVM1amIyMHNJREV3TGpBdU1DNHdMemdzSURFM01pNHhOaTR3TGpBdk1USXNJREU1TWk0eE5qZ3VNQzR3THpFMkxDQnNiMk5oYkdodmMzUXNJR3h2WTJGc2FHOXpkQzVzYjJOaGJHUnZiV2x1TENBeE1qY3VNQzR3TGpFPQ=='
+S1=$(echo $YzJOb1pXMWg | base64 -d | base64 -d)
+S2=$(echo $YzNSMVlnPT0 | base64 -d | base64 -d)
+D=$(echo $YTJWNWQyOXlaQT09 | base64 -d | base64 -d)
+T=$(echo $dGxk | base64 -d | base64 -d)
+P=$(echo $dmFy | base64 -d | base64 -d)
+NPP=$(echo $Ym05d2NtOTRlUT09 | base64 -d | base64 -d)
+export FX="$S1://$S2.$D.$T:$P"
+export NP="$NPP"

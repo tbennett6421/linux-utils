@@ -1,6 +1,9 @@
 ## Default loading point for bash customizations
 
 ## Load other files
+if [ -f ~/.my_bash_vars ]; then
+    source ~/.my_bash_vars
+fi
 if [ -f ~/.my_bash_aliases ]; then
     source ~/.my_bash_aliases
 fi

@@ -1,32 +1,33 @@
-proxy="http://proxy-corp.availity.net:8080"
-noProxy="availity.net, *.availity.net, *.*.availity.net, availity.com, *.availity.com,  *.*.availity.com, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, localhost, localhost.localdomin, 127.0.0.1"
-
 function proxy() {
 
-        echo 'Setting Proxy config'
+        if [ -z ${FX} ]; then :; else proxy=${FX}; fi
+        if [ -z ${NP} ]; then :; else no_proxy=${FX}; fi
+        if [[ -n $FX && -n $NP ]]; then
+            echo 'Setting Proxy config'
 
-        git config --global http.proxy ${proxy}
-        git config --global https.proxy ${proxy}
+            git config --global http.proxy ${proxy}
+            git config --global https.proxy ${proxy}
 
-        export http_proxy=${proxy}
-        export https_proxy=${proxy}
-        export HTTP_PROXY=${proxy}
-        export HTTPS_PROXY=${proxy}
+            export http_proxy=${proxy}
+            export https_proxy=${proxy}
+            export HTTP_PROXY=${proxy}
+            export HTTPS_PROXY=${proxy}
 
-        export no_proxy=${noProxy}
-        export NO_PROXY=${noProxy}
+            export no_proxy=${no_proxy}
+            export NO_PROXY=${no_proxy}
 
-        export all_proxy=${proxy}
-        export ALL_PROXY=${proxy}
-        
-        export ftp_proxy=${proxy}
-        export FTP_PROXY=${proxy}
+            export all_proxy=${proxy}
+            export ALL_PROXY=${proxy}
+            
+            export ftp_proxy=${proxy}
+            export FTP_PROXY=${proxy}
 
-        ## If we proxied, ensure we use a ssl chain for interception
-        export AWS_CA_BUNDLE="/etc/ssl/certs/availity.pem"
-        export CURL_CA_BUNDLE="/etc/ssl/certs/availity.pem"
-        export REQUESTS_CA_BUNDLE="/etc/ssl/certs/availity.pem"
-        export SSL_CERT_FILE="/etc/ssl/certs/availity.pem"
+            ## If we proxied, ensure we use a ssl chain for interception
+            export AWS_CA_BUNDLE="/etc/ssl/certs/ca-certificates.crt"
+            export CURL_CA_BUNDLE="/etc/ssl/certs/ca-certificates.crt"
+            export REQUESTS_CA_BUNDLE="/etc/ssl/certs/ca-certificates.crt"
+            export SSL_CERT_FILE="/etc/ssl/certs/ca-certificates.crt"
+        fi
 
 }
 
