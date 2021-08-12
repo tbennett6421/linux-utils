@@ -1,6 +1,9 @@
 ## Default loading point for bash customizations
 
 ## Load other files
+if [ -f ~/.bash_proxy ]; then
+    source ~/.bash_proxy
+fi
 if [ -f ~/.my_bash_vars ]; then
     source ~/.my_bash_vars
 fi

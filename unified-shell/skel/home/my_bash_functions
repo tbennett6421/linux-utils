@@ -1,8 +1,13 @@
 function proxy() {
 
-        if [ -z ${FX} ]; then :; else proxy=${FX}; fi
-        if [ -z ${NP} ]; then :; else no_proxy=${FX}; fi
-        if [[ -n $FX && -n $NP ]]; then
+        if [[ -z $proxy && -n $FX ]]; then
+          export proxy=$FX
+        fi
+        if [[ -z $no_proxy && -n $NP ]]; then
+          export no_proxy=$NP
+        fi
+        # If proxy and no_proxy are defined; set proxies
+        if [[ -n $proxy && -n $no_proxy ]]; then
             echo 'Setting Proxy config'
 
             git config --global http.proxy ${proxy}
