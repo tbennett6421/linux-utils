@@ -1,0 +1,20 @@
+## Default loading point for zsh customizations
+
+BASE='$HOME/.zsh'
+
+## Load other files
+if [ -f "$BASE/zsh_proxy" ]; then
+    source "$BASE/zsh_proxy"
+fi
+if [ -f "$BASE/zsh_vars" ]; then
+    source "$BASE/zsh_vars"
+fi
+if [ -f "$BASE/zsh_aliases" ]; then
+    source "$BASE/zsh_aliases"
+fi
+if [ -f "$BASE/zsh_functions" ]; then
+    source "$BASE/zsh_functions"
+fi
+if [ -f "$BASE/zsh_env" ]; then
+    source "$BASE/zsh_env"
+fi

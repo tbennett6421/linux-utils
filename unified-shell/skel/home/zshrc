@@ -22,14 +22,17 @@ plugins=(
   wd
 )
 
-
 ZSH_LOCAL="$ZSH/oh-my-zsh.sh"
 if [ -d $ZSH_LOCAL ] ; then
     source $ZSH_LOCAL
 fi
 
-#eval "$(starship init zsh)"
+# My loading point
+if [ -f ~/.zsh/my_zshrc ]; then
+    . ~/.zsh/my_zshrc
+fi
 
+#eval "$(starship init zsh)"
 source /Users/tbennett/.homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
