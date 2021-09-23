@@ -90,7 +90,7 @@ plugins=(
 )
 
 ZSH_LOCAL="$ZSH/oh-my-zsh.sh"
-if [ -d $ZSH_LOCAL ] ; then
+if [ -f $ZSH_LOCAL ] ; then
     source $ZSH_LOCAL
 fi
 
@@ -124,7 +124,7 @@ export TERM=screen-256color
 [[ -f $ZSH_CUSTOM/prompt.sh ]] && source $ZSH_CUSTOM/prompt.sh
 
 #eval "$(starship init zsh)"
-source /Users/tbennett/.homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme
+#source /Users/tbennett/.homebrew/opt/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
