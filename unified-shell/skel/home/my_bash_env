@@ -3,19 +3,9 @@ export USER_AGENT='Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:75.0) Gecko/2010
 export GOPATH=$HOME/go
 export WINLOCAL='/mnt/c/Users/tbennett/'
 PATH=$PATH:~/.local/bin
+PATH=$PATH:/opt/zeek/bin
 alias cd!="cd $WINLOCAL"
 alias curl="curl --user-agent '$USER_AGENT'"
-
-## Detect if on vpn
-PULSE_ADAPTER="eth4"
-
-if [[ $(ip a show $PULSE_ADAPTER up) ]]; then
-    echo "We appear to be on vpn"
-    proxy
-else
-    echo "We do not appear to be on vpn"
-    unproxy
-fi
 
 if grep -q Microsoft /proc/version; then
     export LESSCHARSET="utf-8"
