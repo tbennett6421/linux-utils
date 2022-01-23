@@ -87,6 +87,10 @@ alias find_by_name_indir='sudo find . -iname '
 alias find_by_name_root='sudo find / -iname '
 alias grep_for_text='grep -inrI '
 
+# display top n elements and show ---
+alias headtail5="sed -ne'1,4{p;b};5{x;s/$/.../;x;G;p;b};:a;$p;N;11,$D;ba'"
+alias headtail10="sed -ne'1,9{p;b};10{x;s/$/.../;x;G;p;b};:a;$p;N;21,$D;ba'"
+
 ### Shortcuts ###
 alias h='history'
 alias c='clear'
@@ -117,6 +121,6 @@ if command -v lsb_release &> /dev/null
 then
     if [[ $(lsb_release -i) == *Kali* ]]
     then
-	alias nautilus='thunar'
+        alias nautilus='thunar'
     fi
 fi
