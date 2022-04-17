@@ -7,7 +7,7 @@ PATH=$PATH:/opt/zeek/bin
 alias cd!="cd $WINLOCAL"
 alias curl="curl --user-agent '$USER_AGENT'"
 
-if grep -q Microsoft /proc/version; then
+if grep -q Microsoft /proc/version 2>/dev/null; then
     export LESSCHARSET="utf-8"
 fi
 

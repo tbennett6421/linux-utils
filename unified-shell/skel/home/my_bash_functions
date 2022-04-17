@@ -61,16 +61,13 @@ function unproxy() {
 }
 
 function md() {
-        mkdir -p "$@" && cd "$@"
+    mkdir -p "$@" && cd "$@"
 }
 
 # find shorthand
 function f() {
-        find . -name "$1" 2>&1 | grep -v 'Permission denied'
+    find . -name "$1" 2>&1 | grep -v 'Permission denied'
 }
-
-# List path components, one per line
-function path() { echo -e ${PATH//:/\\n}; }
 
 # Convert hex to decimal
 function h2d() { printf '%d\n' 0x"$1"; }
@@ -113,35 +110,47 @@ function truecolor() {
   }'
 }
 
-function backup() { 
-  cp "$1"{,.bak};
+function backup() {
+    cp "$1"{,.bak};
 }
 
-function extract() { 
-    if [ -f $1 ] ; then 
-      case $1 in 
-        *.tar.bz2)   tar xjf $1     ;; 
-        *.tar.gz)    tar xzf $1     ;; 
-        *.bz2)       bunzip2 $1     ;; 
-        *.rar)       unrar e $1     ;; 
-        *.gz)        gunzip $1      ;; 
-        *.tar)       tar xf $1      ;; 
-        *.tbz2)      tar xjf $1     ;; 
-        *.tgz)       tar xzf $1     ;; 
-        *.zip)       unzip $1       ;; 
-        *.Z)         uncompress $1  ;; 
-        *.7z)        7z x $1        ;; 
-        *.rar)       unrar e $1     ;; 
-        *)     echo "'$1' cannot be extracted via extract()" ;; 
-         esac 
-     else 
-         echo "'$1' is not a valid file" 
-     fi 
+function extract() {
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2)   tar xjf $1     ;;
+            *.tar.gz)    tar xzf $1     ;;
+            *.bz2)       bunzip2 $1     ;;
+            *.rar)       unrar e $1     ;;
+            *.gz)        gunzip $1      ;;
+            *.tar)       tar xf $1      ;;
+            *.tbz2)      tar xjf $1     ;;
+            *.tgz)       tar xzf $1     ;;
+            *.zip)       unzip $1       ;;
+            *.Z)         uncompress $1  ;;
+            *.7z)        7z x $1        ;;
+            *.rar)       unrar e $1     ;;
+            *)     echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
 }
 
-sort_excluding_header(){
-  awk 'NR<2{print $0;next}{print $0 | "sort" }';
+function sort_excluding_header(){
+    awk 'NR<2{print $0;next}{print $0 | "sort" }';
 }
+
+# Docker functions
+dock-run() { sudo docker run -i -t --privileged $@ ;}
+dock-exec() { sudo docker exec -i -t $@ /bin/bash ;}
+dock-log() { sudo docker logs --tail=all -f $@ ;}
+dock-port() { sudo docker port $@ ;}
+dock-vol() { sudo docker inspect --format '{{ .Volumes }}' $@ ;}
+dock-ip() { sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}' $@ ;}
+dock-rmc() { sudo docker rm sudo docker ps -qa --filter 'status=exited' ;}
+dock-rmi() { sudo docker rmi -f sudo docker images | grep '^<none>' | awk '{print $3}' ;}
+dock-stop() { sudo docker stop $(docker ps -a -q); }
+dock-rm() { sudo docker rm $(docker ps -a -q); }
 
 print_iommu_usb_devices(){
     for usb_ctrl in /sys/bus/pci/devices/*/usb*; do pci_path=${usb_ctrl%/*}; iommu_group=$(readlink $pci_path/iommu_group); echo "Bus $(cat $usb_ctrl/busnum) --> ${pci_path##*/} (IOMMU group ${iommu_group##*/})"; lsusb -s ${usb_ctrl#*/usb}:; echo; done
@@ -151,11 +160,21 @@ print_iommu_groups(){
 for g in `find /sys/kernel/iommu_groups/* -maxdepth 0 -type d | sort -V`; do     echo -e "\nIOMMU Group ${g##*/}:";     for d in $g/devices/*; do         echo -e "\t$(lspci -nns ${d##*/})";     done; done;
 }
 
+function last {
+    ls -lt $1 | head
+}
 
-#nosoundonchrome() {
-#    killall pulseaudio;
-#    rm -r ~/.config/pulse/*;
-#    rm -r ~/.pulse*;
-#}
+# copy a file to the clipboard from the command line
+function copyfile {
+    cat $1 | xclip -selection clipboard
+}
 
-#alias start_controller='sudo xboxdrv --silent --detach-kernel-driver --trigger-as-button --ui-axismap x2=ABS_Z,y2=ABS_RZ --ui-buttonmap A=BTN_B,B=BTN_X,X=BTN_A,TR=BTN_THUMBL,TL=BTN_MODE,GUIDE=BTN_THUMBR'
+function pynew() {
+    mkdir -p "$1" && cd "$1" &&  # passing `-p` means it doesn't fail if the dir exists
+    pyenv virtualenv "$2" "$1"-"$2" &&  # create the new virtualenv
+    pyenv local "$1"-"$2" &&  # set the new virtualenv to be the local Python version
+    pipup &&  # a bash alias for pip install --upgrade pip
+    pip install pylint &&  # for Python linting in Sublime Text
+    [ -e "requirements.txt" ] &&  # check if requirements.txt exists...
+    pip install -r requirements.txt  # ...and if it does, install it
+}
